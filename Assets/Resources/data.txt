@@ -1,0 +1,44 @@
+{
+	"cameraSettings" : {
+		"roundDuration" : 15,
+		"roundRadius" : 4,
+		"height" : 4,
+		"lookAtHeight" : 1.5,
+		"roamingRadius" : 0.75,
+		"roamingDuration" : 5,
+		"fovMin" : 35,
+		"fovMax" : 75,
+		"fovDelay" : 4,
+		"fovDuration" : 0.3
+	},
+	"settings" : {
+		"playersCount" : 2,
+		"buffCountMin" : 0,
+		"buffCountMax" : 5,
+		"allowDuplicateBuffs" : false
+	},
+	"stats" : [
+		{ "id" : 0, "title" : "жизнь", "value" : 100, "icon" : "hp" },
+		{ "id" : 1, "title" : "броня", "value" : 25, "icon" : "armor" },
+		{ "id" : 2, "title" : "урон", "value" : 25, "icon" : "axe" },
+		{ "id" : 3, "title" : "вампиризм", "value" : 0, "icon" : "Meat" }
+	],
+	"buffs" : [	
+		{ "id" : 0, "title" : "Вампир", "icon" : "book", "stats" : [
+			{"statId":0,"value":100},
+			{"statId":3,"value":25}
+		]},
+		{ "id" : 1, "title" : "Щит", "icon" : "shield", "stats" : [
+			{"statId":1,"value":25},
+			{"statId":2,"value":-5}
+		]},
+		{ "id" : 2, "title" : "Супер сила", "icon" : "apple", "stats" : [
+			{"statId":2,"value":35}
+		]},
+		{ "id" : 3, "title" : "Титан", "icon" : "hp", "stats" : [
+			{"statId":0,"value":200},
+			{"statId":1,"value":25},
+			{"statId":2,"value":50}
+		]}		
+	]
+}

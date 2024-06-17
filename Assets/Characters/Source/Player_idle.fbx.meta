@@ -1,0 +1,177 @@
+fileFormatVersion: 2
+guid: 87578f1235198cd418f6bd0584eec277
+timeCreated: 1492710275
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: arm_L
+    100002: arm_R
+    100004: Foot_L
+    100006: Foot_R
+    100008: forearm_L
+    100010: forearm_R
+    100012: hand_L
+    100014: hand_R
+    100016: Head
+    100018: Knee_L
+    100020: Knee_R
+    100022: leftWeaponAnchor
+    100024: leg_L
+    100026: leg_R
+    100028: player
+    100030: //RootNode
+    100032: rightWeaponAnchor
+    100034: root
+    100036: spine
+    400000: arm_L
+    400002: arm_R
+    400004: Foot_L
+    400006: Foot_R
+    400008: forearm_L
+    400010: forearm_R
+    400012: hand_L
+    400014: hand_R
+    400016: Head
+    400018: Knee_L
+    400020: Knee_R
+    400022: leftWeaponAnchor
+    400024: leg_L
+    400026: leg_R
+    400028: player
+    400030: //RootNode
+    400032: rightWeaponAnchor
+    400034: root
+    400036: spine
+    7400000: basePlayer_idle
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: basePlayer_idle
+      takeName: basePlayer_idle
+      firstFrame: 0
+      lastFrame: 89
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: player
+        weight: 1
+      - path: player/rightWeaponAnchor
+        weight: 1
+      - path: player/root
+        weight: 1
+      - path: player/root/leg_L
+        weight: 1
+      - path: player/root/leg_L/Knee_L
+        weight: 1
+      - path: player/root/leg_L/Knee_L/Foot_L
+        weight: 1
+      - path: player/root/leg_R
+        weight: 1
+      - path: player/root/leg_R/Knee_R
+        weight: 1
+      - path: player/root/leg_R/Knee_R/Foot_R
+        weight: 1
+      - path: player/root/spine
+        weight: 1
+      - path: player/root/spine/arm_L
+        weight: 1
+      - path: player/root/spine/arm_L/forearm_L
+        weight: 1
+      - path: player/root/spine/arm_L/forearm_L/hand_L
+        weight: 1
+      - path: player/root/spine/arm_L/forearm_L/hand_L/leftWeaponAnchor
+        weight: 1
+      - path: player/root/spine/arm_R
+        weight: 1
+      - path: player/root/spine/arm_R/forearm_R
+        weight: 1
+      - path: player/root/spine/arm_R/forearm_R/hand_R
+        weight: 1
+      - path: player/root/spine/Head
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 100
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
