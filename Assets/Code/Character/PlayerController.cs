@@ -1,20 +1,23 @@
+using System.Collections.Generic;
 using Code.Data;
-using Code.Data.Buffs;
-using Code.Data.Buffs.Abstractions;
 using UnityEngine;
 
 namespace Code.Character
 {
     public class PlayerController : MonoBehaviour
     {
-        private ICharacterStats _baseStats;
-        private ICharacterStats _currentStats;
+        private int _baseHealth;
+        private int _baseArmor;
+        private int _baseDamage;
+        private int _baseVampirism;
 
         [SerializeField]
         private int _armor;
 
         [SerializeField]
         private int _vampirism;
+
+        
 
         [field: SerializeField]
         public int Health { get; private set; }
@@ -33,47 +36,82 @@ namespace Code.Character
             get => _vampirism;
             private set => _vampirism = Mathf.Clamp(value, 0, 100);
         }
+        
+        [SerializeField]
+        private List<Buff> _appliedBuffs = new();
+
+        private void OnValidate()
+        {
+            UpdateStats();
+        }
 
         private void UpdateStats()
         {
-            Health = _currentStats.Health;
-            Armor = _currentStats.Armor;
-            Damage = _currentStats.Damage;
-            Vampirism = _currentStats.Vampirism;
+            if (_appliedBuffs == null) 
+                return;
+
+            Health = _baseHealth;
+            Armor = _baseArmor;
+            Damage = _baseDamage;
+            Vampirism = _baseVampirism;
+
+            foreach (var buff in _appliedBuffs)
+            {
+                foreach (var modifier in buff.stats)
+                {
+                    switch (modifier.statId)
+                    {
+                        case StatsId.LifeID:
+                            Health += (int)modifier.value;
+                            break;
+                        case StatsId.ArmorID:
+                            Armor += (int)modifier.value;
+                            break;
+                        case StatsId.DamageID:
+                            Damage += (int)modifier.value;
+                            break;
+                        case StatsId.LifeStealID:
+                            Vampirism += (int)modifier.value;
+                            break;
+                    }
+                }
+            }
         }
 
         public void Initialize(Stat[] stats)
         {
-            int health = 0, armor = 0, damage = 0, vampirism = 0;
-
             foreach (var stat in stats)
             {
                 switch (stat.id)
                 {
                     case StatsId.LifeID:
-                        health = (int)stat.value;
+                        _baseHealth = (int)stat.value;
                         break;
                     case StatsId.ArmorID:
-                        armor = (int)stat.value;
+                        _baseArmor = (int)stat.value;
                         break;
                     case StatsId.DamageID:
-                        damage = (int)stat.value;
+                        _baseDamage = (int)stat.value;
                         break;
                     case StatsId.LifeStealID:
-                        vampirism = (int)stat.value;
+                        _baseVampirism = (int)stat.value;
                         break;
                 }
             }
-
-            _baseStats = new BaseCharacterStats(health, armor, damage, vampirism);
-            _currentStats = _baseStats;
 
             UpdateStats();
         }
 
         public void ApplyBuffs(Buff[] buffs)
         {
-            _currentStats = BuffFactory.ApplyBuffs(_baseStats, buffs);
+            _appliedBuffs.Clear();
+            _appliedBuffs.AddRange(buffs);
+            UpdateStats();
+        }
+
+        public void ClearBuffs()
+        {
+            _appliedBuffs.Clear();
             UpdateStats();
         }
     }

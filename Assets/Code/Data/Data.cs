@@ -55,9 +55,9 @@ namespace Code.Data
     [Serializable]
     public class Buff
     {
+        public string title;
         public string icon;
         public int id;
-        public string title;
         public BuffStat[] stats;
     }
 }
