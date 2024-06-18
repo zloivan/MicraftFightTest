@@ -53,6 +53,18 @@ namespace Code.Managers
             }
         }
 
+        [ContextMenu("Player 1 attack player 2")]
+        public void Player1Attack()
+        {
+            _player1.Attack(_player2);
+        }
+        
+        [ContextMenu("Player 2 attack player 1")]
+        public void Player2Attack()
+        {
+            _player2.Attack(_player1);
+        }
+        
         private void ApplyRandomBuffs(PlayerController player)
         {
             var buffCount = Random.Range(_dataLoader.Data.settings.buffCountMin,

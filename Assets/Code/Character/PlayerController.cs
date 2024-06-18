@@ -10,6 +10,7 @@ namespace Code.Character
         private int _baseArmor;
         private int _baseDamage;
         private int _baseVampirism;
+        private int _maxHealth;
 
         [SerializeField]
         private int _armor;
@@ -17,10 +18,17 @@ namespace Code.Character
         [SerializeField]
         private int _vampirism;
 
-        
+        [SerializeField]
+        private List<Buff> _appliedBuffs = new();
 
-        [field: SerializeField]
-        public int Health { get; private set; }
+        [SerializeField]
+        private int _health;
+        
+        public int Health
+        {
+            get => _health;
+            private set => _health = Mathf.Clamp(value, 0, _maxHealth);
+        }
 
         public int Armor
         {
@@ -36,9 +44,8 @@ namespace Code.Character
             get => _vampirism;
             private set => _vampirism = Mathf.Clamp(value, 0, 100);
         }
-        
-        [SerializeField]
-        private List<Buff> _appliedBuffs = new();
+
+        public bool IsDead { get; private set; }
 
         private void OnValidate()
         {
@@ -47,7 +54,7 @@ namespace Code.Character
 
         private void UpdateStats()
         {
-            if (_appliedBuffs == null) 
+            if (_appliedBuffs == null)
                 return;
 
             Health = _baseHealth;
@@ -63,6 +70,7 @@ namespace Code.Character
                     {
                         case StatsId.LifeID:
                             Health += (int)modifier.value;
+                            _maxHealth += (int)modifier.value;  // Increase max health by the buff value
                             break;
                         case StatsId.ArmorID:
                             Armor += (int)modifier.value;
@@ -86,6 +94,7 @@ namespace Code.Character
                 {
                     case StatsId.LifeID:
                         _baseHealth = (int)stat.value;
+                        _maxHealth = _baseHealth;
                         break;
                     case StatsId.ArmorID:
                         _baseArmor = (int)stat.value;
@@ -113,6 +122,46 @@ namespace Code.Character
         {
             _appliedBuffs.Clear();
             UpdateStats();
+        }
+
+        // Attack Logic
+        private float CalculateEffectiveDamage(int attackerDamage, int targetArmor)
+        {
+            float damageReduction = targetArmor / 100f;
+            return attackerDamage * (1 - damageReduction);
+        }
+
+        private void ApplyDamage(PlayerController target, float damage)
+        {
+            target.Health -= (int)damage;
+            if (target.Health <= 0)
+            {
+                target.Health = 0;
+                target.OnDeath();
+            }
+        }
+
+        private void ApplyVampirism(PlayerController attacker, float damageDealt)
+        {
+            float healthRecovered = damageDealt * (attacker.Vampirism / 100f);
+            attacker.Health += (int)healthRecovered;
+            attacker.Health = Mathf.Clamp(attacker.Health, 0, attacker._maxHealth);
+        }
+
+        
+        public void Attack(PlayerController target)
+        {
+            if (IsDead || target.IsDead) return;
+
+            float effectiveDamage = CalculateEffectiveDamage(this.Damage, target.Armor);
+            ApplyDamage(target, effectiveDamage);
+            ApplyVampirism(this, effectiveDamage);
+        }
+
+        private void OnDeath()
+        {
+            IsDead = true;
+            // Implement death logic here, such as triggering animations or removing the player from the game
         }
     }
 }

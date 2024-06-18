@@ -371,6 +371,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 224000013999886012, guid: 486e302ca293de54a8e5ca500d5d717d, type: 3}
   m_PrefabInstance: {fileID: 1568522398}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &455761657 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114000014218675436, guid: 44aea1bdccdaf4544a845460aacc9734, type: 3}
+  m_PrefabInstance: {fileID: 1603228349}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &502479215
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -387,6 +398,10 @@ PrefabInstance:
       propertyPath: character
       value: 
       objectReference: {fileID: 1355401635}
+    - target: {fileID: 114000012938007214, guid: 44aea1bdccdaf4544a845460aacc9734, type: 3}
+      propertyPath: _attackButton
+      value: 
+      objectReference: {fileID: 838094122}
     - target: {fileID: 224000010324349074, guid: 44aea1bdccdaf4544a845460aacc9734, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -677,6 +692,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &838094122 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114000014218675436, guid: 44aea1bdccdaf4544a845460aacc9734, type: 3}
+  m_PrefabInstance: {fileID: 502479215}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &871526791
 GameObject:
   m_ObjectHideFlags: 0
@@ -966,6 +992,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameWithBuffsButton: {fileID: 2109196114}
   _gameWithoutBuffsButton: {fileID: 1568522399}
+  _player1AttackButton: {fileID: 455761657}
+  _player2AttackButton: {fileID: 838094122}
 --- !u!1001 &1355401634
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1044,10 +1072,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb5858bbf9a74388a66069625dbc258d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Health>k__BackingField: 0
-  <Armor>k__BackingField: 0
+  _armor: 0
+  _vampirism: 0
+  _appliedBuffs: []
+  _health: 0
   <Damage>k__BackingField: 0
-  <Vampirism>k__BackingField: 0
 --- !u!4 &1355401638 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000014260285384, guid: 27d5d38a58fb54240ae92d1d0ad28430, type: 3}
@@ -1205,6 +1234,10 @@ PrefabInstance:
       propertyPath: character
       value: 
       objectReference: {fileID: 1612305482}
+    - target: {fileID: 114000012938007214, guid: 44aea1bdccdaf4544a845460aacc9734, type: 3}
+      propertyPath: _attackButton
+      value: 
+      objectReference: {fileID: 455761657}
     - target: {fileID: 224000010324349074, guid: 44aea1bdccdaf4544a845460aacc9734, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -1423,10 +1456,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb5858bbf9a74388a66069625dbc258d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Health>k__BackingField: 0
-  <Armor>k__BackingField: 0
+  _armor: 0
+  _vampirism: 0
+  _appliedBuffs: []
+  _health: 0
   <Damage>k__BackingField: 0
-  <Vampirism>k__BackingField: 0
 --- !u!4 &1612305485 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000014260285384, guid: 27d5d38a58fb54240ae92d1d0ad28430, type: 3}
@@ -1478,7 +1512,7 @@ Transform:
   m_GameObject: {fileID: 1735161267}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10, y: 10, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

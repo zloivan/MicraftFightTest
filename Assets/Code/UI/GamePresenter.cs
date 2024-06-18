@@ -21,5 +21,17 @@ namespace Code.UI
         {
             _gameManager.StartGame(false);
         }
+
+        public void OnPlayerAttackButtonClicked(int playerId)
+        {
+            if (playerId == 1)
+            {
+                _gameManager.Player1Attack();
+            }
+            else if (playerId == 2)
+            {
+                _gameManager.Player2Attack();
+            }
+        }
     }
 }
