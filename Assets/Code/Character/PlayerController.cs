@@ -13,6 +13,9 @@ namespace Code.Character
         private int _maxHealth;
 
         [SerializeField]
+        private Animator _animator;
+
+        [SerializeField]
         private int _armor;
 
         [SerializeField]
@@ -23,11 +26,18 @@ namespace Code.Character
 
         [SerializeField]
         private int _health;
-        
+
+        private static readonly int HealthAnimationHash = Animator.StringToHash("Health");
+        private static readonly int AttackAnimationHash = Animator.StringToHash("Attack");
+
         public int Health
         {
             get => _health;
-            private set => _health = Mathf.Clamp(value, 0, _maxHealth);
+            private set
+            {
+                _health = Mathf.Clamp(value, 0, _maxHealth);
+                _animator.SetInteger(HealthAnimationHash, _health);
+            }
         }
 
         public int Armor
@@ -70,7 +80,7 @@ namespace Code.Character
                     {
                         case StatsId.LifeID:
                             Health += (int)modifier.value;
-                            _maxHealth += (int)modifier.value;  // Increase max health by the buff value
+                            _maxHealth += (int)modifier.value; // Increase max health by the buff value
                             break;
                         case StatsId.ArmorID:
                             Armor += (int)modifier.value;
@@ -124,7 +134,6 @@ namespace Code.Character
             UpdateStats();
         }
 
-        // Attack Logic
         private float CalculateEffectiveDamage(int attackerDamage, int targetArmor)
         {
             float damageReduction = targetArmor / 100f;
@@ -148,11 +157,12 @@ namespace Code.Character
             attacker.Health = Mathf.Clamp(attacker.Health, 0, attacker._maxHealth);
         }
 
-        
+
         public void Attack(PlayerController target)
         {
             if (IsDead || target.IsDead) return;
 
+            _animator.SetTrigger(AttackAnimationHash);
             float effectiveDamage = CalculateEffectiveDamage(this.Damage, target.Armor);
             ApplyDamage(target, effectiveDamage);
             ApplyVampirism(this, effectiveDamage);
@@ -161,7 +171,6 @@ namespace Code.Character
         private void OnDeath()
         {
             IsDead = true;
-            // Implement death logic here, such as triggering animations or removing the player from the game
         }
     }
 }
