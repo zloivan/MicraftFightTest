@@ -1,7 +1,10 @@
-public class StatsId
+namespace Code.Data
 {
-    public const int LIFE_ID = 0;
-    public const int ARMOR_ID = 1;
-    public const int LIFE_STEAL_ID = 3;
-    public const int DAMAGE_ID = 2;
+    public class StatsId
+    {
+        public const int LifeID = 0;
+        public const int ArmorID = 1;
+        public const int LifeStealID = 3;
+        public const int DamageID = 2;
+    }
 }
