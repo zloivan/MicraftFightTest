@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -185,10 +186,16 @@ namespace Code.Character
 
         private void ApplyDamage(PlayerController target, float damage)
         {
-            target.Health -= (int)damage;
+            if (target.Health < damage)
+            {
+                damage = target.Health;
+            }
 
-            var adjustedPosition = target.transform.position;
-            target.FloatingNumbers.ShowFloatingText(adjustedPosition, $"{damage}", Color.red);
+            if (damage > 0)
+            {
+                target.FloatingNumbers.ShowFloatingText($"{(int)damage}", Color.red);
+                target.Health -= (int)damage;
+            }
 
             if (target.Health == 0)
             {
@@ -200,17 +207,19 @@ namespace Code.Character
         {
             var healthRecovered = damageDealt * (attacker.Vampirism / 100f);
 
-            if (healthRecovered > 0)
+            if (!(_maxHealth - Health > healthRecovered))
             {
-                var adjustedPosition = attacker.transform.position;
-                attacker.FloatingNumbers.ShowFloatingText(adjustedPosition, $"+{healthRecovered}", Color.green);
+                healthRecovered = _maxHealth - Health;
             }
 
-            attacker.Health += (int)healthRecovered;
+            if (healthRecovered > 0)
+            {
+                attacker.FloatingNumbers.ShowFloatingText($"+{(int)healthRecovered}", Color.green);
+                attacker.Health += (int)healthRecovered;
+            }
         }
 
         public void Attack(PlayerController target)
-        
         {
             if (IsDead || target.IsDead) return;
 

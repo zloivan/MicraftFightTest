@@ -19,7 +19,7 @@ namespace Code.UI
 
         private void Update()
         {
-            transform.LookAt(_camera.transform);
+            transform.rotation = Quaternion.LookRotation(transform.position - _camera.transform.position);
         }
 
         public void SetValue(int health, int maxHealth)

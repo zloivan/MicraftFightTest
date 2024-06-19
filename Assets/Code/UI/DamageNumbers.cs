@@ -15,11 +15,9 @@ namespace Code.UI
         [SerializeField]
         private Canvas _displayCanvas;
 
-        private Camera _camera;
 
         private void Start()
         {
-            _camera = ServiceLocator.GetService<Camera>();
             for (var i = 0; i < poolSize; i++)
             {
                 var instance = Instantiate(floatingTextPrefab, _displayCanvas.transform);
@@ -28,12 +26,12 @@ namespace Code.UI
             }
         }
 
-        public void ShowFloatingText(Vector3 worldPosition, string text, Color color)
+        public void ShowFloatingText( string text, Color color)
         {
             if (_floatingTextPool.Count > 0)
             {
                 var instance = _floatingTextPool.Dequeue();
-                instance.transform.position = _camera.WorldToScreenPoint(worldPosition);
+                instance.transform.position = _displayCanvas.transform.position;
                 var tmpText = instance.GetComponent<TMP_Text>();
                 tmpText.text = text;
                 tmpText.color = color;
