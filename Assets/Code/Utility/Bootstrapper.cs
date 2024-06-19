@@ -18,6 +18,7 @@ namespace Code.Utility
         [SerializeField]
         private Camera _camera;
 
+       
         private void Awake()
         {
             ServiceLocator.RegisterService<IDataLoader>(new ResourcesLoader(DATA_FILE_NAME));
@@ -26,5 +27,7 @@ namespace Code.Utility
             
             new GamePresenter(_gameView, _gameManager);
         }
+        
+        
     }
 }

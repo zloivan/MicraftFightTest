@@ -15,7 +15,7 @@ namespace Code.Utility
         private void LoadSprites(string resourcePath)
         {
             _sprites = new Dictionary<string, Sprite>();
-            Sprite[] loadedSprites = Resources.LoadAll<Sprite>(resourcePath);
+            var loadedSprites = Resources.LoadAll<Sprite>(resourcePath);
 
             foreach (var sprite in loadedSprites)
             {

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Code.Character;
 using Code.Data;
 using Code.Utility;
-using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -11,25 +10,25 @@ namespace Code.Managers
 {
     public class GameManager : MonoBehaviour
     {
-        [SerializeField]
-        private PlayerController _player1;
+        [SerializeField] private PlayerController _player1;
+        [SerializeField] private PlayerController _player2;
 
-        [SerializeField]
-        private PlayerController _player2;
+        public event Action<int, List<Stat>, List<Buff>> OnPlayerStatsChanged;
 
         private IDataLoader _dataLoader;
         private List<Buff> _allBuffs;
 
-        
-
-        private void Awake()
-        {
-            _dataLoader = ServiceLocator.GetService<IDataLoader>();
-            LoadBuffs();
-        }
 
         private void Start()
         {
+            _dataLoader = ServiceLocator.GetService<IDataLoader>();
+            LoadBuffs();
+
+            _player1.OnStatsChanged.AddListener(() => HandleStatsChanged(_player1));
+            _player2.OnStatsChanged.AddListener(() => HandleStatsChanged(_player2));
+            _player1.OnBuffsChanged.AddListener(() => HandleBuffsChanged(_player1));
+            _player2.OnBuffsChanged.AddListener(() => HandleBuffsChanged(_player2));
+            
             StartGame(false);
         }
 
@@ -42,6 +41,7 @@ namespace Code.Managers
         {
             InitializePlayer(_player1, withBuffs);
             InitializePlayer(_player2, withBuffs);
+            InitializePlayerStats();
         }
 
         private void InitializePlayer(PlayerController player, bool withBuffs)
@@ -58,18 +58,6 @@ namespace Code.Managers
             }
         }
 
-        [ContextMenu("Player 1 attack player 2")]
-        public void Player1Attack()
-        {
-            _player1.Attack(_player2);
-        }
-        
-        [ContextMenu("Player 2 attack player 1")]
-        public void Player2Attack()
-        {
-            _player2.Attack(_player1);
-        }
-        
         private void ApplyRandomBuffs(PlayerController player)
         {
             var buffCount = Random.Range(_dataLoader.Data.settings.buffCountMin,
@@ -93,6 +81,36 @@ namespace Code.Managers
             }
 
             player.ApplyBuffs(selectedBuffs.ToArray());
+        }
+
+        private void InitializePlayerStats()
+        {
+            OnPlayerStatsChanged?.Invoke(1, new List<Stat>(_player1.GetCurrentStats()), _player1.GetBuffs());
+            OnPlayerStatsChanged?.Invoke(2, new List<Stat>(_player2.GetCurrentStats()), _player2.GetBuffs());
+        }
+
+        private void HandleStatsChanged(PlayerController player)
+        {
+            var playerId = player == _player1 ? 1 : 2;
+            OnPlayerStatsChanged?.Invoke(playerId, new List<Stat>(player.GetCurrentStats()), player.GetBuffs());
+        }
+
+        private void HandleBuffsChanged(PlayerController player)
+        {
+            var playerId = player == _player1 ? 1 : 2;
+            OnPlayerStatsChanged?.Invoke(playerId, new List<Stat>(player.GetCurrentStats()), player.GetBuffs());
+        }
+
+        [ContextMenu("Player 1 attack player 2")]
+        public void Player1Attack()
+        {
+            _player1.Attack(_player2);
+        }
+
+        [ContextMenu("Player 2 attack player 1")]
+        public void Player2Attack()
+        {
+            _player2.Attack(_player1);
         }
     }
 }

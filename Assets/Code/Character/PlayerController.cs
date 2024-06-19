@@ -1,76 +1,85 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Code.Data;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Code.Character
 {
     public class PlayerController : MonoBehaviour
     {
-        private int _baseHealth;
-        private int _baseArmor;
-        private int _baseDamage;
-        private int _baseVampirism;
+        public UnityEvent OnStatsChanged = new UnityEvent();
+        public UnityEvent OnBuffsChanged = new UnityEvent();
+
+        private ReadOnlyCollection<Stat> _baseStats;
+        [SerializeField]
+        private List<Stat> _currentStats = new();
         private int _maxHealth;
 
-        [SerializeField]
-        private Animator _animator;
-
-        [SerializeField]
-        private int _armor;
-
-        [SerializeField]
-        private int _vampirism;
-
-        [SerializeField]
-        private List<Buff> _appliedBuffs = new();
-
-        [SerializeField]
-        private int _health;
+        [SerializeField] private Animator _animator;
+        [SerializeField] private List<Buff> _appliedBuffs = new();
 
         private static readonly int HealthAnimationHash = Animator.StringToHash("Health");
         private static readonly int AttackAnimationHash = Animator.StringToHash("Attack");
 
         public int Health
         {
-            get => _health;
+            get => GetStatValue(StatsId.LifeID);
             private set
             {
-                _health = Mathf.Clamp(value, 0, _maxHealth);
-                _animator.SetInteger(HealthAnimationHash, _health);
+                var clampedValue = Mathf.Clamp(value, 0, _maxHealth);
+                UpdateStat(StatsId.LifeID, clampedValue);
+                _animator.SetInteger(HealthAnimationHash, clampedValue);
+                OnStatsChanged.Invoke();
             }
         }
 
         public int Armor
         {
-            get => _armor;
-            private set => _armor = Mathf.Clamp(value, 0, 100);
+            get => GetStatValue(StatsId.ArmorID);
+            private set
+            {
+                UpdateStat(StatsId.ArmorID, Mathf.Clamp(value, 0, 100));
+                OnStatsChanged.Invoke();
+            }
         }
 
-        [field: SerializeField]
-        public int Damage { get; private set; }
+        public int Damage
+        {
+            get => GetStatValue(StatsId.DamageID);
+            private set
+            {
+                UpdateStat(StatsId.DamageID, value);
+                OnStatsChanged.Invoke();
+            }
+        }
 
         public int Vampirism
         {
-            get => _vampirism;
-            private set => _vampirism = Mathf.Clamp(value, 0, 100);
+            get => GetStatValue(StatsId.LifeStealID);
+            private set
+            {
+                UpdateStat(StatsId.LifeStealID, Mathf.Clamp(value, 0, 100));
+                OnStatsChanged.Invoke();
+            }
         }
 
         public bool IsDead { get; private set; }
 
         private void OnValidate()
         {
-            UpdateStats();
+            ApplyBuffsToStats();
         }
 
-        private void UpdateStats()
+        private void ApplyBuffsToStats()
         {
-            if (_appliedBuffs == null)
+            if (_appliedBuffs == null || _appliedBuffs.Count == 0)
+            {
                 return;
-
-            Health = _baseHealth;
-            Armor = _baseArmor;
-            Damage = _baseDamage;
-            Vampirism = _baseVampirism;
+            }
+            
+            _currentStats = _baseStats.DeepCopyStats().ToList();
 
             foreach (var buff in _appliedBuffs)
             {
@@ -79,8 +88,8 @@ namespace Code.Character
                     switch (modifier.statId)
                     {
                         case StatsId.LifeID:
-                            Health += (int)modifier.value;
-                            _maxHealth += (int)modifier.value; // Increase max health by the buff value
+                            _maxHealth += (int)modifier.value;
+                            Health = _maxHealth;
                             break;
                         case StatsId.ArmorID:
                             Armor += (int)modifier.value;
@@ -94,44 +103,64 @@ namespace Code.Character
                     }
                 }
             }
+
+            OnStatsChanged.Invoke();
         }
 
         public void Initialize(Stat[] stats)
         {
-            foreach (var stat in stats)
+            _baseStats = new ReadOnlyCollection<Stat>(stats.DeepCopyStats().ToList());
+            _currentStats = _baseStats.DeepCopyStats().ToList();
+            foreach (var stat in _baseStats)
             {
-                switch (stat.id)
+                if (stat.id == StatsId.LifeID)
                 {
-                    case StatsId.LifeID:
-                        _baseHealth = (int)stat.value;
-                        _maxHealth = _baseHealth;
-                        break;
-                    case StatsId.ArmorID:
-                        _baseArmor = (int)stat.value;
-                        break;
-                    case StatsId.DamageID:
-                        _baseDamage = (int)stat.value;
-                        break;
-                    case StatsId.LifeStealID:
-                        _baseVampirism = (int)stat.value;
-                        break;
+                    _maxHealth = (int)stat.value;
+                    Health = _maxHealth;
                 }
             }
 
-            UpdateStats();
+            IsDead = false;
         }
 
         public void ApplyBuffs(Buff[] buffs)
         {
             _appliedBuffs.Clear();
             _appliedBuffs.AddRange(buffs);
-            UpdateStats();
+            ApplyBuffsToStats();
+            OnBuffsChanged.Invoke();
         }
 
         public void ClearBuffs()
         {
             _appliedBuffs.Clear();
-            UpdateStats();
+            ApplyBuffsToStats();
+            OnBuffsChanged.Invoke();
+        }
+
+        public List<Buff> GetBuffs()
+        {
+            return _appliedBuffs;
+        }
+
+        public IEnumerable<Stat> GetCurrentStats()
+        {
+            return _currentStats;
+        }
+
+        private int GetStatValue(int statId)
+        {
+            var stat = _currentStats.Find(s => s.id == statId);
+            return stat != null ? (int)stat.value : 0;
+        }
+
+        private void UpdateStat(int statId, float newValue)
+        {
+            var stat = _currentStats.Find(s => s.id == statId);
+            if (stat != null)
+            {
+                stat.value = newValue;
+            }
         }
 
         private float CalculateEffectiveDamage(int attackerDamage, int targetArmor)
@@ -143,7 +172,7 @@ namespace Code.Character
         private void ApplyDamage(PlayerController target, float damage)
         {
             target.Health -= (int)damage;
-            
+
             if (target.Health == 0)
             {
                 target.OnDeath();
@@ -156,7 +185,6 @@ namespace Code.Character
             attacker.Health += (int)healthRecovered;
             attacker.Health = Mathf.Clamp(attacker.Health, 0, attacker._maxHealth);
         }
-
 
         public void Attack(PlayerController target)
         {

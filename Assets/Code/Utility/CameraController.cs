@@ -29,14 +29,11 @@ namespace Code.Utility
         private Camera _camera;
         private float _currentFov;
 
-        private void Awake()
+        private void Start()
         {
             _cameraSettings = ServiceLocator.GetService<IDataLoader>().Data.cameraSettings;
             _camera = ServiceLocator.GetService<Camera>();
-        }
-
-        private void Start()
-        {
+            
             _cameraAnchor1.position = GetMidpoint() + new Vector3(0, _cameraSettings.height, 0);
             _targetPosition = GetMidpoint() + new Vector3(0, _cameraSettings.lookAtHeight, 0);
             _cameraAnchor2.localPosition = new Vector3(0, 0, -_cameraSettings.roundRadius);
