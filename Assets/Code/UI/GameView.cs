@@ -17,6 +17,12 @@ namespace Code.UI
         [SerializeField] private GameObject _statPrefab;
         [SerializeField] private GameObject _buffPrefab;
 
+        [SerializeField]
+        private HealthBar _player1Health;
+
+        [SerializeField]
+        private HealthBar _player2Health;
+
         private GamePresenter _presenter;
         private ImageProvider _imageProvider;
 

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Code.Data;
+using Code.UI;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -12,13 +13,25 @@ namespace Code.Character
         public UnityEvent OnStatsChanged = new UnityEvent();
         public UnityEvent OnBuffsChanged = new UnityEvent();
 
+        [SerializeField]
+        private HealthBar _healthBar;
+
+
+        public DamageNumbers FloatingNumbers;
+
+
         private ReadOnlyCollection<Stat> _baseStats;
+
         [SerializeField]
         private List<Stat> _currentStats = new();
+
         private int _maxHealth;
 
-        [SerializeField] private Animator _animator;
-        [SerializeField] private List<Buff> _appliedBuffs = new();
+        [SerializeField]
+        private Animator _animator;
+
+        [SerializeField]
+        private List<Buff> _appliedBuffs = new();
 
         private static readonly int HealthAnimationHash = Animator.StringToHash("Health");
         private static readonly int AttackAnimationHash = Animator.StringToHash("Attack");
@@ -31,6 +44,7 @@ namespace Code.Character
                 var clampedValue = Mathf.Clamp(value, 0, _maxHealth);
                 UpdateStat(StatsId.LifeID, clampedValue);
                 _animator.SetInteger(HealthAnimationHash, clampedValue);
+                _healthBar.SetValue(Health, _maxHealth);
                 OnStatsChanged.Invoke();
             }
         }
@@ -78,7 +92,7 @@ namespace Code.Character
             {
                 return;
             }
-            
+
             _currentStats = _baseStats.DeepCopyStats().ToList();
 
             foreach (var buff in _appliedBuffs)
@@ -173,6 +187,9 @@ namespace Code.Character
         {
             target.Health -= (int)damage;
 
+            var adjustedPosition = target.transform.position;
+            target.FloatingNumbers.ShowFloatingText(adjustedPosition, $"{damage}", Color.red);
+
             if (target.Health == 0)
             {
                 target.OnDeath();
@@ -182,11 +199,18 @@ namespace Code.Character
         private void ApplyVampirism(PlayerController attacker, float damageDealt)
         {
             var healthRecovered = damageDealt * (attacker.Vampirism / 100f);
+
+            if (healthRecovered > 0)
+            {
+                var adjustedPosition = attacker.transform.position;
+                attacker.FloatingNumbers.ShowFloatingText(adjustedPosition, $"+{healthRecovered}", Color.green);
+            }
+
             attacker.Health += (int)healthRecovered;
-            attacker.Health = Mathf.Clamp(attacker.Health, 0, attacker._maxHealth);
         }
 
         public void Attack(PlayerController target)
+        
         {
             if (IsDead || target.IsDead) return;
 
