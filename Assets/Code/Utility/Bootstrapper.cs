@@ -7,7 +7,8 @@ namespace Code.Utility
     public class Bootstrapper : MonoBehaviour
     {
         private const string DATA_FILE_NAME = "data";
-
+        private const string ICONS_FOLDER_PATH = "Icons";
+        
         [SerializeField]
         private GameView _gameView;
 
@@ -21,7 +22,8 @@ namespace Code.Utility
         {
             ServiceLocator.RegisterService<IDataLoader>(new ResourcesLoader(DATA_FILE_NAME));
             ServiceLocator.RegisterService(_camera);
-
+            ServiceLocator.RegisterService(new ImageProvider(ICONS_FOLDER_PATH));
+            
             new GamePresenter(_gameView, _gameManager);
         }
     }

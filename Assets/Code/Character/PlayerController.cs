@@ -136,23 +136,23 @@ namespace Code.Character
 
         private float CalculateEffectiveDamage(int attackerDamage, int targetArmor)
         {
-            float damageReduction = targetArmor / 100f;
+            var damageReduction = targetArmor / 100f;
             return attackerDamage * (1 - damageReduction);
         }
 
         private void ApplyDamage(PlayerController target, float damage)
         {
             target.Health -= (int)damage;
-            if (target.Health <= 0)
+            
+            if (target.Health == 0)
             {
-                target.Health = 0;
                 target.OnDeath();
             }
         }
 
         private void ApplyVampirism(PlayerController attacker, float damageDealt)
         {
-            float healthRecovered = damageDealt * (attacker.Vampirism / 100f);
+            var healthRecovered = damageDealt * (attacker.Vampirism / 100f);
             attacker.Health += (int)healthRecovered;
             attacker.Health = Mathf.Clamp(attacker.Health, 0, attacker._maxHealth);
         }
@@ -163,7 +163,7 @@ namespace Code.Character
             if (IsDead || target.IsDead) return;
 
             _animator.SetTrigger(AttackAnimationHash);
-            float effectiveDamage = CalculateEffectiveDamage(this.Damage, target.Armor);
+            var effectiveDamage = CalculateEffectiveDamage(Damage, target.Armor);
             ApplyDamage(target, effectiveDamage);
             ApplyVampirism(this, effectiveDamage);
         }
