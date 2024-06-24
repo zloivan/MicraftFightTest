@@ -11,8 +11,8 @@ PlayerSettings:
   defaultScreenOrientation: 4
   targetDevice: 2
   useOnDemandResources: 0
-  accelerometerFrequency: 60
-  companyName: DefaultCompany
+  accelerometerFrequency: 0
+  companyName: zloivan
   productName: TestProjectWithBuffs
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -160,7 +160,10 @@ PlayerSettings:
   resetResolutionOnWindowResize: 0
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
-  applicationIdentifier: {}
+  applicationIdentifier:
+    Android: com.DefaultCompany.TestProjectWithBuffs
+    Standalone: com.zloivan.TestProjectWithBuffs
+    iPhone: com.DefaultCompany.TestProjectWithBuffs
   buildNumber:
     Standalone: 0
     VisionOS: 0
@@ -835,7 +838,7 @@ PlayerSettings:
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Android: DOTWEEN
+    Android: DOTWEEN;UNITASK_DOTWEEN_SUPPORT
     EmbeddedLinux: DOTWEEN
     GameCoreScarlett: DOTWEEN
     GameCoreXboxOne: DOTWEEN
@@ -844,13 +847,14 @@ PlayerSettings:
     PS4: DOTWEEN
     PS5: DOTWEEN
     QNX: DOTWEEN
+    Server: 
     Stadia: DOTWEEN
-    Standalone: DOTWEEN
+    Standalone: DOTWEEN;UNITASK_DOTWEEN_SUPPORT
     VisionOS: DOTWEEN
     WebGL: DOTWEEN
     Windows Store Apps: DOTWEEN
     XboxOne: DOTWEEN
-    iPhone: DOTWEEN
+    iPhone: DOTWEEN;UNITASK_DOTWEEN_SUPPORT
     tvOS: DOTWEEN
   additionalCompilerArguments: {}
   platformArchitecture: {}
