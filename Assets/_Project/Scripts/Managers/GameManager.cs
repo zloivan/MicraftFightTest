@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Bootstrap;
 using Controllers;
 using Data;
+using UI.Scripts.Presenters;
 using UI.Scripts.Views;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -26,6 +27,11 @@ namespace Managers
         [SerializeField]
         private GameView _gameView;
 
+       
+        private GamePresenter _gamePresenter;
+
+        
+
         private void Awake()
         {
             _dataProvider = ServiceLocator.GetService<DataProviderFromAddressables>();
@@ -36,6 +42,7 @@ namespace Managers
         {
             _cameraController.SetupLookAtPosition((_player1.transform.position + _player2.transform.position) / 2);
 
+            _gamePresenter = new GamePresenter(_gameView, this);
             _player1.SetupView();
 
             LoadBuffs();
