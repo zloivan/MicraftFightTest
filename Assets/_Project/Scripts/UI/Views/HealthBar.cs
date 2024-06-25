@@ -1,9 +1,9 @@
-using Bootstrap;
-using Controllers;
+using _Project.Scripts.Controllers;
+using _Project.Scripts.ServiceLocatorSystem;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI.Scripts.Views
+namespace _Project.Scripts.UI.Views
 {
     public class HealthBar : MonoBehaviour
     {
@@ -12,9 +12,12 @@ namespace UI.Scripts.Views
 
         private Camera _camera;
 
-        private void Awake()
+        private void Start()
         {
-            _camera = ServiceLocator.GetService<CameraController>().MainCamera;
+            if (ServiceLocator.For(this).TryGet(out Camera camera))
+            {
+                _camera = camera;
+            }
         }
 
         private void Update()

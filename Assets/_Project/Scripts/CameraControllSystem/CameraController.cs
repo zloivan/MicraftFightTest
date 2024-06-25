@@ -1,10 +1,17 @@
-using Data;
+using _Project.Scripts.Data;
+using _Project.Scripts.ServiceLocatorSystem;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Controllers
+namespace _Project.Scripts.Controllers
 {
-    public class CameraController : MonoBehaviour
+    public interface ICameraController
+    {
+        void SetupLookAtPosition(Vector3 lookAtPosition);
+        Camera GameCamera { get; }
+    }
+
+    public class CameraController : MonoBehaviour, ICameraController
     {
         [Header("References")]
         [SerializeField]
@@ -40,11 +47,17 @@ namespace Controllers
         private float _fovTarget;
         private float _fovElapsed;
 
-        public Camera MainCamera => _camera;
+        public Camera GameCamera => _camera;
 
-        public void SetupModel(CameraModel cameraModel)
+        private void Awake()
         {
-            _cameraModel = cameraModel;
+            ServiceLocator.For(this).Register<ICameraController>(this);
+            ServiceLocator.For(this).Register(_camera);
+        }
+
+        private void Start()
+        {
+            _cameraModel = ServiceLocator.For(this).Get<IDataProvider>().Data.cameraSettings;
         }
 
         private void Update()
@@ -80,17 +93,17 @@ namespace Controllers
             _currentFov = _cameraModel.fovMin;
             _fovTarget = Random.Range(_cameraModel.fovMin, _cameraModel.fovMax);
             _waitTime = _cameraModel.fovDelay;
-            
+
             _isInitialized = true;
         }
 
         private void RotateCamera()
         {
             const float rotationAngle = 360;
-            
+
             _rotationAngle += rotationAngle / _cameraModel.roundDuration * Time.deltaTime;
-            
-            if (_rotationAngle > rotationAngle) 
+
+            if (_rotationAngle > rotationAngle)
                 _rotationAngle -= rotationAngle;
 
             _cameraAnchor1.rotation = Quaternion.Euler(0, _rotationAngle, 0);
@@ -115,9 +128,9 @@ namespace Controllers
 
             _roamingTime -= Time.deltaTime;
 
-            if (_roamingTime > 0) 
+            if (_roamingTime > 0)
                 return;
-            
+
             _roamingOffset = -_roamingOffset;
             _roamingTime = _cameraModel.roamingDuration;
         }

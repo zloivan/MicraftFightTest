@@ -1,12 +1,13 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI.Scripts.Elements
+namespace _Project.Scripts.UI.Elements
 {
     public class StatBuffView : MonoBehaviour
     {
         [SerializeField] private Image _iconImage;
-        [SerializeField] private Text _valueText;
+        [SerializeField] private TMP_Text _valueText;
 
         public void SetData(Sprite icon, string value)
         {

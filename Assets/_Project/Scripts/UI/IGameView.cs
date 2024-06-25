@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Data;
-using UI.Scripts.Presenters;
+using _Project.Scripts.Data;
+using _Project.Scripts.UI.Presenters;
 
-namespace UI.Scripts
+namespace _Project.Scripts.UI
 {
     public interface IGameView
     {

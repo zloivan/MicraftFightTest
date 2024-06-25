@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Data;
-using UI.Scripts.FloatingNumbers;
-using UI.Scripts.Views;
+using _Project.Scripts.Data;
+using _Project.Scripts.UI.FloatingNumbers;
+using _Project.Scripts.UI.Views;
+using _Project.Scripts.Utility;
 using UnityEngine;
 using UnityEngine.Events;
-using Utility;
 
-namespace Controllers
+namespace _Project.Scripts.Controllers
 {
     public class PlayerController : PlayerModel
     {
@@ -95,7 +95,7 @@ namespace Controllers
                 return;
             }
 
-            _currentStats = _baseStats.DeepCopyStats().ToList();
+            _currentStats = _baseStats.DeepCopy().ToList();
 
             foreach (var buff in _appliedBuffs)
             {
@@ -125,8 +125,8 @@ namespace Controllers
 
         public void Initialize(Stat[] stats)
         {
-            _baseStats = new ReadOnlyCollection<Stat>(stats.DeepCopyStats().ToList());
-            _currentStats = _baseStats.DeepCopyStats().ToList();
+            _baseStats = new ReadOnlyCollection<Stat>(stats.DeepCopy().ToList());
+            _currentStats = _baseStats.DeepCopy().ToList();
             foreach (var stat in _baseStats)
             {
                 if (stat.id == StatsId.LifeID)

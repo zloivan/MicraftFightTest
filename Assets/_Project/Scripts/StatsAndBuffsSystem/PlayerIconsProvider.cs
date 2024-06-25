@@ -1,27 +1,32 @@
 using System.Collections.Generic;
 using System.Threading;
-using Bootstrap;
+using _Project.Scripts.EntryPoint;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using ServiceLocator = _Project.Scripts.ServiceLocatorSystem.ServiceLocator;
 
-namespace Data
+namespace _Project.Scripts.Data
 {
-    public class PlayerIconsProvider
+    public interface IPlayerIconProvider
+    {
+        Sprite GetSpriteById(string id);
+    }
+
+    public class PlayerIconsProvider : IPlayerIconProvider, IInitializeble
     {
         private readonly Dictionary<string, Sprite> _sprites = new();
 
         private readonly string _tagName;
-        private readonly AddressablesService _addressablesService;
 
         public PlayerIconsProvider(string tagName)
         {
             _tagName = tagName;
-            _addressablesService = ServiceLocator.GetService<AddressablesService>();
         }
 
-        public async UniTask LoadSprites(CancellationToken cancellationToken)
+        public async UniTask Initialize(CancellationToken cancellationToken)
         {
-            var sprites = await _addressablesService.LoadAssetsByTagAsync<Sprite>(_tagName, cancellationToken);
+            var addressablesService = ServiceLocator.Global.Get<IAddressableService>();
+            var sprites = await addressablesService.LoadAssetsByTagAsync<Sprite>(_tagName, cancellationToken);
 
             Debug.Assert(sprites is { Count: > 0 }, "Failed to load sprites");
 

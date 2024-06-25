@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using Data;
-using Managers;
-using UI.Scripts.Views;
+using _Project.Scripts.Data;
+using _Project.Scripts.Managers;
+using _Project.Scripts.UI.Views;
 
-namespace UI.Scripts.Presenters
+namespace _Project.Scripts.UI.Presenters
 {
     public class GamePresenter
     {

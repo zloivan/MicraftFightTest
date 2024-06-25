@@ -1,4 +1,4 @@
-namespace Data
+namespace _Project.Scripts.Data
 {
     public class StatsId
     {

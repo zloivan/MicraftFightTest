@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
-using Bootstrap;
-using Controllers;
-using Data;
-using UI.Scripts.Presenters;
-using UI.Scripts.Views;
+using _Project.Scripts.Controllers;
+using _Project.Scripts.Data;
+using _Project.Scripts.ServiceLocatorSystem;
+using _Project.Scripts.UI.Presenters;
+using _Project.Scripts.UI.Views;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Managers
+namespace _Project.Scripts.Managers
 {
     public class GameManager : MonoBehaviour
     {
@@ -20,26 +20,19 @@ namespace Managers
 
         public event Action<int, List<Stat>, List<Buff>> OnPlayerStatsChanged;
 
-        private DataProviderFromAddressables _dataProvider;
+        private IDataProvider _dataProvider;
         private List<Buff> _allBuffs;
-        private CameraController _cameraController;
+        private ICameraController _cameraController;
 
         [SerializeField]
         private GameView _gameView;
-
-       
         private GamePresenter _gamePresenter;
-
-        
-
-        private void Awake()
-        {
-            _dataProvider = ServiceLocator.GetService<DataProviderFromAddressables>();
-            _cameraController = ServiceLocator.GetService<CameraController>();
-        }
 
         private void Start()
         {
+            _dataProvider = ServiceLocator.For(this).Get<IDataProvider>();
+            _cameraController = ServiceLocator.For(this).Get<ICameraController>();
+            
             _cameraController.SetupLookAtPosition((_player1.transform.position + _player2.transform.position) / 2);
 
             _gamePresenter = new GamePresenter(_gameView, this);

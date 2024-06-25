@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-namespace UI.Scripts.FloatingNumbers
+namespace _Project.Scripts.UI.FloatingNumbers
 {
     public class DamageNumbers : MonoBehaviour
     {

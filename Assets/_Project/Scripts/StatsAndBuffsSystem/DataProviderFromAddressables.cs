@@ -1,27 +1,33 @@
 using System;
 using System.Threading;
-using Bootstrap;
+using _Project.Scripts.EntryPoint;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using ServiceLocator = _Project.Scripts.ServiceLocatorSystem.ServiceLocator;
 
-namespace Data
+namespace _Project.Scripts.Data
 {
-    public class DataProviderFromAddressables
+    public interface IDataProvider
     {
-        private readonly AddressablesService _addressablesService;
+        Data Data { get; }
+    }
+    
+    public class DataProviderFromAddressables : IDataProvider, IInitializeble
+    {
         private readonly string _address;
+        public Data Data { get; private set; }
 
         public DataProviderFromAddressables(string address)
         {
-            _addressablesService = ServiceLocator.GetService<AddressablesService>();
             _address = address;
         }
 
-        public async UniTask<Data> LoadData(CancellationToken cancellationToken)
+        public async UniTask Initialize(CancellationToken cancellationToken)
         {
-            var text = await _addressablesService.LoadAssetAsync<TextAsset>(_address, cancellationToken);
-
+            var addressablesService = ServiceLocator.Global.Get<IAddressableService>();
+            var text = await addressablesService.LoadAssetAsync<TextAsset>(_address, cancellationToken);
             Debug.Assert(text != null, "Couldn't load Config");
+
             try
             {
                 Data = JsonUtility.FromJson<Data>(text.text);
@@ -33,9 +39,6 @@ namespace Data
             }
 
             Debug.Assert(Data != null, "Couldn't parse Config");
-            return Data;
         }
-
-        public Data Data { get; private set; }
     }
 }

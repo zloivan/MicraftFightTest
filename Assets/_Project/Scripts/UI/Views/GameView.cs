@@ -1,12 +1,12 @@
 using System.Collections.Generic;
-using Bootstrap;
-using Data;
-using UI.Scripts.Elements;
-using UI.Scripts.Presenters;
+using _Project.Scripts.Data;
+using _Project.Scripts.ServiceLocatorSystem;
+using _Project.Scripts.UI.Elements;
+using _Project.Scripts.UI.Presenters;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI.Scripts.Views
+namespace _Project.Scripts.UI.Views
 {
     public class GameView : MonoBehaviour
     {
@@ -26,7 +26,7 @@ namespace UI.Scripts.Views
         private HealthBar _player2Health;
 
         private GamePresenter _presenter;
-        private PlayerIconsProvider _playerIconsProvider;
+        private IPlayerIconProvider _playerIconsProvider;
 
         private readonly Dictionary<int, List<StatBuffView>> _playerStatViews = new();
         private readonly Dictionary<int, List<StatBuffView>> _playerBuffViews = new();
@@ -34,8 +34,8 @@ namespace UI.Scripts.Views
         public void SetPresenter(GamePresenter presenter)
         {
             _presenter = presenter;
+            _playerIconsProvider = ServiceLocator.For(this).Get<IPlayerIconProvider>();
             
-            _playerIconsProvider = ServiceLocator.GetService<PlayerIconsProvider>();
             _gameWithBuffsButton.onClick.AddListener(() => _presenter.OnGameWithBuffsButtonClicked());
             _gameWithoutBuffsButton.onClick.AddListener(() => _presenter.OnGameWithoutBuffsButtonClicked());
             _player1AttackButton.onClick.AddListener(() => _presenter.OnPlayerAttackButtonClicked(1));

@@ -2,7 +2,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
-namespace UI.Scripts.FloatingNumbers
+namespace _Project.Scripts.UI.FloatingNumbers
 {
     public class FloatingText : MonoBehaviour
     {
