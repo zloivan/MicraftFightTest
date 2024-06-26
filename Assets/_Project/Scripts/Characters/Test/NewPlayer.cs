@@ -1,58 +1,43 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
+using _Project.Scripts.PickupSystem;
+using _Project.Scripts.ServiceLocatorSystem;
 using _Project.Scripts.StatsSystem;
 using UnityEngine;
 
 namespace _Project.Scripts.Characters.Test
 {
-    public class Charector : Entity
+    public class BuffApplierTest : MonoBehaviour
     {
         [SerializeField]
-        private List<NewBuff> _buffs;
+        private List<StatBuff> _buffsToApplie;
 
         [SerializeField]
-        private NewBuff _buffToRemove;
+        private StatBuff _buffToRemove;
 
+        [SerializeField]
+        private Entity _entity;
+
+        private BuffApplier _applier;
+
+        private void Start()
+        {
+            _applier = new BuffApplier(ServiceLocator.For(this).Get<IStatModifierFactory>());
+        }
 
         [ContextMenu("Apply Buffs")]
         public void ApplyBuffs()
         {
-            foreach (var buff in _buffs)
-            {
-                buff.Visit(this);
-            }
-
-            Debug.Log($"{Stats}");
+            _applier.ApplyBuffEffect(_entity, _buffsToApplie);
+            
+            Debug.Log($"{_entity.Stats}");
         }
 
         [ContextMenu("Reset to Base")]
         public void TestResetStats()
         {
-            ClearModifiers();
-
-            Debug.Log($"{Stats}");
-        }
-
-
-        [ContextMenu("Remove Buff")]
-        public void RemoveBuff()
-        {
-            var toRemove = _buffs.Where(b => b == _buffToRemove).ToList();
-            
-            foreach (var buffToRemove in toRemove)
-            {
-                RemoveBuff(buffToRemove);
-                _buffs.Remove(buffToRemove);
-            }
-
-            _buffToRemove = null;
-            
-            Debug.Log($"{Stats}");
-        }
-
-        private void RemoveBuff(NewBuff buffToRemove)
-        {
-            buffToRemove.RemoveBuffEffect();
+            _entity.Stats.Mediator.ClearModifiers();
+            Debug.Log($"{_entity.Stats}");
         }
     }
 }

@@ -3,7 +3,7 @@ using System;
 namespace _Project.Scripts.StatsSystem
 {
     [Serializable]
-    public struct StatModificationPack
+    public struct StatModificationValue
     {
         public StatType StatType;
 

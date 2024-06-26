@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using _Project.Scripts.AddressableSystem;
+using _Project.Scripts.PickupSystem;
 using _Project.Scripts.ServiceLocatorSystem;
 using _Project.Scripts.StatsAndBuffsSystem;
 using UnityEngine;
@@ -36,6 +37,8 @@ namespace _Project.Scripts.AppEntryPoint
             _playerStatPanelPlayerIconsProvider = new PlayerIconsProvider(_iconsFolderPath);
             ServiceLocator.Global.Register<IPlayerIconProvider>(_playerStatPanelPlayerIconsProvider);
             _initializbles.Add(_playerStatPanelPlayerIconsProvider);
+            
+            ServiceLocator.Global.Register<IStatModifierFactory>(new BasicStatModifierFactory());
         }
 
         private async void Start()

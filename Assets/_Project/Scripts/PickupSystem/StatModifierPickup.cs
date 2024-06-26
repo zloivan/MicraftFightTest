@@ -1,5 +1,5 @@
-using System;
 using _Project.Scripts.Characters;
+using _Project.Scripts.ServiceLocatorSystem;
 using _Project.Scripts.StatsSystem;
 using UnityEngine;
 
@@ -21,12 +21,8 @@ namespace _Project.Scripts.PickupSystem
 
         protected override void ApplyPickupEffect(Entity entity)
         {
-            StatModifier modifier = _operatorType switch
-            {
-                OperatorType.Add => new BasicStatModifier(_statType, _duration, i => i + _value),
-                OperatorType.Multiply => new BasicStatModifier(_statType, _duration, i => i * _value),
-                _ => throw new ArgumentOutOfRangeException()
-            };
+            var modifier = ServiceLocator.For(this).Get<IStatModifierFactory>()
+                .Create(_statType, _operatorType, _value, _duration);
 
             entity.Stats.Mediator.AddModifier(modifier);
         }

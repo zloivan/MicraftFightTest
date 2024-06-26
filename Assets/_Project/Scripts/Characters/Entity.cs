@@ -21,11 +21,6 @@ namespace _Project.Scripts.Characters
             Stats.Mediator.Update(Time.deltaTime);
         }
 
-        public void ClearModifiers()
-        {
-            Stats.Mediator.ClearModifiers();
-        }
-
         public void Accept(IVisitor visitor)
         {
             visitor.Visit(this);

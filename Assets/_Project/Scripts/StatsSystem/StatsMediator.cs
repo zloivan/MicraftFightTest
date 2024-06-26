@@ -31,6 +31,11 @@ namespace _Project.Scripts.StatsSystem
 
         public void ClearModifiers()
         {
+            if (_listModifiers.Count == 0)
+            {
+                return;
+            }
+            
             foreach (var modifier in _listModifiers.ToList())
             {
                 modifier.Dispose();
