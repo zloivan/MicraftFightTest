@@ -197,6 +197,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2778456237917212922, guid: 3552df340d558b74bbfe383224fa3bf2, type: 3}
+      propertyPath: _nextSceneName
+      value: MainNewSystem
+      objectReference: {fileID: 0}
+    - target: {fileID: 2778456237917212922, guid: 3552df340d558b74bbfe383224fa3bf2, type: 3}
       propertyPath: _cameraController
       value: 
       objectReference: {fileID: 0}

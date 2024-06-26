@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using _Project.Scripts.Data;
 using _Project.Scripts.ServiceLocatorSystem;
+using _Project.Scripts.StatsAndBuffsSystem;
 using _Project.Scripts.UI.Elements;
 using _Project.Scripts.UI.Presenters;
 using UnityEngine;

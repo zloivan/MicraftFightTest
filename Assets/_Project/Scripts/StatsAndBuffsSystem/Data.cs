@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace _Project.Scripts.Data
+namespace _Project.Scripts.StatsAndBuffsSystem
 {
     [Serializable]
     public class Data

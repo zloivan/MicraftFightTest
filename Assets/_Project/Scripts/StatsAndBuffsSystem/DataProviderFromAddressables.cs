@@ -1,11 +1,12 @@
 using System;
 using System.Threading;
-using _Project.Scripts.EntryPoint;
+using _Project.Scripts.AddressableSystem;
+using _Project.Scripts.AppEntryPoint;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using ServiceLocator = _Project.Scripts.ServiceLocatorSystem.ServiceLocator;
 
-namespace _Project.Scripts.Data
+namespace _Project.Scripts.StatsAndBuffsSystem
 {
     public interface IDataProvider
     {

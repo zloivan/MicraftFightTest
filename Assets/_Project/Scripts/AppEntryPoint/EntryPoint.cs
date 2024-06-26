@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using System.Threading;
-using _Project.Scripts.Data;
+using _Project.Scripts.AddressableSystem;
 using _Project.Scripts.ServiceLocatorSystem;
+using _Project.Scripts.StatsAndBuffsSystem;
 using UnityEngine;
 
-namespace _Project.Scripts.EntryPoint
+namespace _Project.Scripts.AppEntryPoint
 {
     public class EntryPoint : MonoBehaviour
     {

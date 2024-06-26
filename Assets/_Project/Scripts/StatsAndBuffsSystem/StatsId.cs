@@ -1,4 +1,4 @@
-namespace _Project.Scripts.Data
+namespace _Project.Scripts.StatsAndBuffsSystem
 {
     public class StatsId
     {

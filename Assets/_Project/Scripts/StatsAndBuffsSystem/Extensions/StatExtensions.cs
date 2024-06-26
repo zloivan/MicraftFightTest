@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using _Project.Scripts.Data;
 
-namespace _Project.Scripts.Utility
+namespace _Project.Scripts.StatsAndBuffsSystem.Extensions
 {
     public static class StatExtensions
     {

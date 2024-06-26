@@ -6,7 +6,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 
-namespace _Project.Scripts.Data
+namespace _Project.Scripts.AddressableSystem
 {
     public class AddressablesService : IAddressableService
     {

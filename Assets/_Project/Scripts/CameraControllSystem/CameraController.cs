@@ -1,9 +1,9 @@
-using _Project.Scripts.Data;
 using _Project.Scripts.ServiceLocatorSystem;
+using _Project.Scripts.StatsAndBuffsSystem;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace _Project.Scripts.Controllers
+namespace _Project.Scripts.CameraControllSystem
 {
     public interface ICameraController
     {

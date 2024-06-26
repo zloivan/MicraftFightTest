@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using _Project.Scripts.Data;
+using _Project.Scripts.StatsAndBuffsSystem;
 using _Project.Scripts.UI.Presenters;
 
 namespace _Project.Scripts.UI

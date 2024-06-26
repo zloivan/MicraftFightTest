@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using _Project.Scripts.Data;
+using _Project.Scripts.StatsAndBuffsSystem;
+using _Project.Scripts.StatsAndBuffsSystem.Extensions;
 using _Project.Scripts.UI.FloatingNumbers;
 using _Project.Scripts.UI.Views;
-using _Project.Scripts.Utility;
 using UnityEngine;
 using UnityEngine.Events;
 
