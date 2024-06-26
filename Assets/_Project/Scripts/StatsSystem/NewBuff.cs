@@ -18,6 +18,8 @@ namespace _Project.Scripts.StatsSystem
         public Sprite Icon;
 
 
+        private List<StatModifier> _activeModifiers = new();
+
         private void ApplyPickupEffect(Entity entity)
         {
             foreach (var statApplier in _statsToChange)
@@ -31,9 +33,11 @@ namespace _Project.Scripts.StatsSystem
                     _ => throw new ArgumentOutOfRangeException()
                 };
 
+                _activeModifiers.Add(modifier);
                 entity.Stats.Mediator.AddModifier(modifier);
             }
         }
+        
 
         public void Visit<T>(T visitable) where T : Component, IVisitable
         {
@@ -41,6 +45,16 @@ namespace _Project.Scripts.StatsSystem
             {
                 ApplyPickupEffect(entity);
             }
+        }
+
+        public void RemoveBuffEffect()
+        {
+            foreach (var statModifier in _activeModifiers)
+            {
+                statModifier.Dispose();
+            }
+            
+            _activeModifiers.Clear();
         }
     }
 }

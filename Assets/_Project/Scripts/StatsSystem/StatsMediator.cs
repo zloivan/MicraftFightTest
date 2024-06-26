@@ -1,51 +1,54 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace _Project.Scripts.StatsSystem
 {
     public class StatsMediator
     {
-        private readonly LinkedList<StatModifier> _modifiers = new();
+        private readonly List<StatModifier> _listModifiers = new();
 
-        public event EventHandler<Query> Queries;
-
-        public void PerformQuery(object sender, Query query) => Queries?.Invoke(sender, query);
+        public void PerformQuery(object sender, Query query)
+        {
+            foreach (var modifier in _listModifiers)
+            {
+                modifier.Handle(sender, query);
+            }
+        }
 
         public void AddModifier(StatModifier modifier)
         {
-            _modifiers.AddLast(modifier);
-            Queries += modifier.Handle;
+            _listModifiers.Add(modifier);
 
-            modifier.OnDisposed += _ =>
+            modifier.OnDisposed += _ => _listModifiers.Remove(modifier);
+        }
+
+        public void RemoveModifier(StatModifier modifier)
+        {
+            modifier.Dispose();
+            _listModifiers.Remove(modifier);
+        }
+
+        public void ClearModifiers()
+        {
+            foreach (var modifier in _listModifiers.ToList())
             {
-                _modifiers.Remove(modifier);
-                Queries -= modifier.Handle;
-            };
+                modifier.Dispose();
+            }
+
+            _listModifiers.Clear();
         }
 
         public void Update(float deltaTime)
         {
-            var node = _modifiers.First;
-
-            while (node != null)
+            foreach (var modifier in _listModifiers)
             {
-                var modifier = node.Value;
                 modifier.Update(deltaTime);
-                node = node.Next;
             }
-            
-            node = _modifiers.First;
 
-            while (node != null)
+            foreach (var modifier in _listModifiers.Where(m => m.MarkedForRemoval).ToList())
             {
-                var nextNode = node.Next;
-
-                if (node.Value.MarkedForRemoval)
-                {
-                    node.Value.Dispose();
-                }
-                
-                node = nextNode;
+                modifier.Dispose();
             }
         }
     }

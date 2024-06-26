@@ -13,7 +13,7 @@ namespace _Project.Scripts.Characters
 
         private void Awake()
         {
-            ResetStats();
+            Stats = new Stats(new StatsMediator(), _baseStats);
         }
 
         private void Update()
@@ -21,9 +21,9 @@ namespace _Project.Scripts.Characters
             Stats.Mediator.Update(Time.deltaTime);
         }
 
-        public void ResetStats()
+        public void ClearModifiers()
         {
-            Stats = new Stats(new StatsMediator(), _baseStats);
+            Stats.Mediator.ClearModifiers();
         }
 
         public void Accept(IVisitor visitor)
