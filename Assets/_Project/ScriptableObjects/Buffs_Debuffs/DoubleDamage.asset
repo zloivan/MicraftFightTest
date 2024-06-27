@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7745c84439d149ba9faf74ccf65a682b, type: 3}
   m_Name: DoubleDamage
   m_EditorClassIdentifier: 
-  _statsToChange:
+  StatsToChange:
   - StatType: 0
     OperatorType: 1
     Value: 2
-  _duration: 0
+  Duration: 0
   Icon: {fileID: 21300000, guid: 172774604c1bee84185a69041576525b, type: 3}

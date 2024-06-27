@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using _Project.Scripts.Configs;
 using _Project.Scripts.PickupSystem;
 using _Project.Scripts.ServiceLocatorSystem;
 using _Project.Scripts.StatsSystem;
@@ -10,25 +10,23 @@ namespace _Project.Scripts.Characters.Test
     public class BuffApplierTest : MonoBehaviour
     {
         [SerializeField]
-        private List<StatBuff> _buffsToApplie;
-
-        [SerializeField]
-        private StatBuff _buffToRemove;
-
-        [SerializeField]
         private Entity _entity;
 
         private BuffApplier _applier;
+        private IBuffProvider _buffProvider;
 
         private void Start()
         {
             _applier = new BuffApplier(ServiceLocator.For(this).Get<IStatModifierFactory>());
+            _buffProvider = ServiceLocator.For(this).Get<IBuffProvider>();
         }
 
         [ContextMenu("Apply Buffs")]
         public void ApplyBuffs()
         {
-            _applier.ApplyBuffs(_entity, _buffsToApplie);
+            var buffsToApplie = _buffProvider.GetBuffs();
+            
+            _applier.ApplyBuffs(_entity, buffsToApplie);
             
             Debug.Log($"{_entity.Stats}");
         }

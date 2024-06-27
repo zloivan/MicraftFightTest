@@ -2,7 +2,7 @@
 
 namespace _Project.Scripts.StatsAndBuffsSystem
 {
-    [Serializable]
+    [Serializable][Obsolete]
     public class Data
     {
         public CameraModel cameraSettings;

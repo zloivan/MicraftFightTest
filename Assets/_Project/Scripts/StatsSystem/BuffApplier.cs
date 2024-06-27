@@ -14,13 +14,13 @@ namespace _Project.Scripts.StatsSystem
 
         private void ApplyBuff(Entity entity, StatBuff buffsToApply)
         {
-            foreach (var modificationPack in buffsToApply._statsToChange)
+            foreach (var modificationPack in buffsToApply.StatsToChange)
             {
                 var modifier = _statModifierFactory.Create(
                     modificationPack.StatType,
                     modificationPack.OperatorType,
                     modificationPack.Value,
-                    buffsToApply._duration);
+                    buffsToApply.Duration);
 
                 entity.Stats.Mediator.AddModifier(modifier);
             }

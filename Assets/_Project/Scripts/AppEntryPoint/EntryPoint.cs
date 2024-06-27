@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Threading;
 using _Project.Scripts.AddressableSystem;
+using _Project.Scripts.Characters.Test;
+using _Project.Scripts.Configs;
 using _Project.Scripts.PickupSystem;
 using _Project.Scripts.ServiceLocatorSystem;
 using _Project.Scripts.StatsAndBuffsSystem;
@@ -22,6 +24,11 @@ namespace _Project.Scripts.AppEntryPoint
         [SerializeField]
         private string _nextSceneName = "Main";
 
+        [SerializeField]
+        private DirectFromSceneBuffProvider _directFromSceneBuffProvider;
+
+        
+
         private DataProviderFromAddressables _dataProviderFromAddressables;
         private PlayerIconsProvider _playerStatPanelPlayerIconsProvider;
         private readonly List<IInitializeble> _initializbles = new();
@@ -40,6 +47,8 @@ namespace _Project.Scripts.AppEntryPoint
             _initializbles.Add(_playerStatPanelPlayerIconsProvider);
             
             ServiceLocator.Global.Register<IStatModifierFactory>(new BasicStatModifierFactory());
+
+            ServiceLocator.Global.Register<IBuffProvider>(_directFromSceneBuffProvider);
         }
 
         private async void Start()
