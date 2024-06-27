@@ -4,7 +4,6 @@ namespace _Project.Scripts.StatsSystem
     {
         Add,
         Multiply,
-        Divide,
         Percentage
     }
 }

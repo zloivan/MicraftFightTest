@@ -1,30 +1,48 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using _Project.Scripts.StatsSystem.ModificationOrder;
+using _Project.Scripts.StatsSystem.ModificationOrder.abstractions;
 
 namespace _Project.Scripts.StatsSystem
 {
     public class StatsMediator
     {
         private readonly List<StatModifier> _listModifiers = new();
+        private readonly IStatModifierOder _statModifierOder = new NormalModificationOrder();
+        private readonly Dictionary<StatType, IEnumerable<StatModifier>> _statTypeToModifiersCache = new();
 
         public void PerformQuery(object sender, Query query)
         {
-            foreach (var modifier in _listModifiers)
+            if (!_statTypeToModifiersCache.ContainsKey(query.StatType))
             {
-                modifier.Handle(sender, query);
+                _statTypeToModifiersCache[query.StatType] =
+                    _listModifiers.Where(m => m.StatType == query.StatType).ToList();
             }
+
+            query.Value = _statModifierOder.Apply(_statTypeToModifiersCache[query.StatType], query.Value);
         }
 
         public void AddModifier(StatModifier modifier)
         {
             _listModifiers.Add(modifier);
+            InvalidateCache(modifier.StatType);
 
             modifier.OnDisposed += _ => _listModifiers.Remove(modifier);
+            modifier.OnDisposed += m => InvalidateCache(m.StatType);
+        }
+
+        private void InvalidateCache(StatType modifierType)
+        {
+            _statTypeToModifiersCache.Remove(modifierType);
         }
 
         public void RemoveModifier(StatModifier modifier)
         {
+            if (_listModifiers.Contains(modifier) == false)
+            {
+                return;
+            }
+
             modifier.Dispose();
             _listModifiers.Remove(modifier);
         }
@@ -35,7 +53,7 @@ namespace _Project.Scripts.StatsSystem
             {
                 return;
             }
-            
+
             foreach (var modifier in _listModifiers.ToList())
             {
                 modifier.Dispose();

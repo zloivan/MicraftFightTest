@@ -1,4 +1,6 @@
-namespace _Project.Scripts.StatsSystem
+using _Project.Scripts.StatsSystem.OperationStrategies.abstractions;
+
+namespace _Project.Scripts.StatsSystem.OperationStrategies
 {
     public class AddOperation : IOperationStrategy
     {

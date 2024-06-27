@@ -28,7 +28,7 @@ namespace _Project.Scripts.Characters.Test
         [ContextMenu("Apply Buffs")]
         public void ApplyBuffs()
         {
-            _applier.ApplyBuffEffect(_entity, _buffsToApplie);
+            _applier.ApplyBuffs(_entity, _buffsToApplie);
             
             Debug.Log($"{_entity.Stats}");
         }

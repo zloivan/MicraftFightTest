@@ -4,6 +4,7 @@ using _Project.Scripts.AddressableSystem;
 using _Project.Scripts.PickupSystem;
 using _Project.Scripts.ServiceLocatorSystem;
 using _Project.Scripts.StatsAndBuffsSystem;
+using _Project.Scripts.StatsSystem;
 using UnityEngine;
 
 namespace _Project.Scripts.AppEntryPoint

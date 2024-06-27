@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using _Project.Scripts.Characters;
-using _Project.Scripts.PickupSystem;
 
 namespace _Project.Scripts.StatsSystem
 {
@@ -13,7 +12,7 @@ namespace _Project.Scripts.StatsSystem
             _statModifierFactory = statModifierFactory;
         }
 
-        public void ApplyBuff(Entity entity, StatBuff buffsToApply)
+        private void ApplyBuff(Entity entity, StatBuff buffsToApply)
         {
             foreach (var modificationPack in buffsToApply._statsToChange)
             {
@@ -27,13 +26,12 @@ namespace _Project.Scripts.StatsSystem
             }
         }
 
-        public void ApplyBuffEffect(Entity entity, IEnumerable<StatBuff> buffsToApply)
+        public void ApplyBuffs(Entity entity, IEnumerable<StatBuff> buffsToApply)
         {
             foreach (var buff in buffsToApply)
             {
                 ApplyBuff(entity, buff);
             }
         }
-       
     }
 }

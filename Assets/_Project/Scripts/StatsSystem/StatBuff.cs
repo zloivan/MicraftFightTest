@@ -11,7 +11,5 @@ namespace _Project.Scripts.StatsSystem
         public float _duration;
 
         public Sprite Icon;
-
-        public int _id;
     }
 }
