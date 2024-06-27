@@ -1,18 +1,25 @@
 using System;
+using UnityEngine;
 
 namespace _Project.Scripts.StatsSystem
 {
-    public abstract class StatModifier : IDisposable
+    public class StatModifier : IDisposable
     {
-        public bool MarkedForRemoval { get; private set; }
         public event Action<StatModifier> OnDisposed = delegate { };
-
+        
+        private readonly StatType _statType;
+        private readonly IOperationStrategy _operationStrategy;
+        
+        public bool MarkedForRemoval { get; private set; }
 
         //TODO Implement Timer
         //CountDownTime timer;
 
-        protected StatModifier(float duration)
+        public StatModifier(StatType statType, float duration, IOperationStrategy operationStrategy)
         {
+            _statType = statType;
+            _operationStrategy = operationStrategy;
+
             if (duration < 0)
             {
                 return;
@@ -28,7 +35,13 @@ namespace _Project.Scripts.StatsSystem
             //timer?.Tick(deltaTime);
         }
 
-        public abstract void Handle(object sender, Query query);
+        public void Handle(object sender, Query query)
+        {
+            if (query.StatType == _statType)
+            {
+                query.Value = _operationStrategy.Calculate(query.Value);
+            }
+        }
 
         public void Dispose()
         {

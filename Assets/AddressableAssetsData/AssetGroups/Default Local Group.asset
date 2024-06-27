@@ -83,7 +83,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7b3dff5a068bc4445ab42bc93fab768f
-    m_Address: Assets/_Project/Scenes/Main/MainNewSystem.unity
+    m_Address: MainNewSystem
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

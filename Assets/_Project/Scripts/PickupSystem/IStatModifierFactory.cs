@@ -12,14 +12,16 @@ namespace _Project.Scripts.PickupSystem
     {
         public StatModifier Create(StatType statType, OperatorType operatorType, int value, float duration)
         {
-            StatModifier modifier = operatorType switch
+            IOperationStrategy operationStrategy = operatorType switch
             {
-                OperatorType.Add => new BasicStatModifier(statType, duration, i => i + value),
-                OperatorType.Multiply => new BasicStatModifier(statType, duration, i => i * value),
-                _ => throw new ArgumentOutOfRangeException()
+                OperatorType.Add => new AddOperation(value),
+                OperatorType.Multiply => new MultiplicationOperation(value),
+                OperatorType.Divide => new DivisionOperation(value),
+                OperatorType.Percentage => new PercentageOperation(value),
+                _ => throw new ArgumentOutOfRangeException(nameof(operatorType), operatorType, null)
             };
 
-            return modifier;
+            return new StatModifier(statType, duration, operationStrategy);
         }
     }
 }

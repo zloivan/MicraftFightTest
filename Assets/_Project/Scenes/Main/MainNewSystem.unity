@@ -856,6 +856,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1000011813424072, guid: 27d5d38a58fb54240ae92d1d0ad28430, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1612305484}
+    - targetCorrespondingSourceObject: {fileID: 1000011813424072, guid: 27d5d38a58fb54240ae92d1d0ad28430, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1612305487}
   m_SourcePrefab: {fileID: 100100000, guid: 27d5d38a58fb54240ae92d1d0ad28430, type: 3}
 --- !u!1 &1612305483 stripped
 GameObject:
@@ -874,14 +877,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f5df1b12ff54f3b8351b077e01b25d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseStats: {fileID: 11400000, guid: 9fd16b04966fd9048b7da11eb48a1c83, type: 2}
-  _buffs:
+  _buffsToApplie:
   - {fileID: 11400000, guid: 46bc13bffb98a0b4a8082e7d83b72243, type: 2}
   - {fileID: 11400000, guid: 022db95371d79d641b733200df465560, type: 2}
   - {fileID: 11400000, guid: 1ab24075945949e4a8c0fbbb4d30e38a, type: 2}
-  - {fileID: 11400000, guid: 1ab24075945949e4a8c0fbbb4d30e38a, type: 2}
-  - {fileID: 11400000, guid: 1ab24075945949e4a8c0fbbb4d30e38a, type: 2}
   _buffToRemove: {fileID: 0}
+  _entity: {fileID: 1612305487}
+--- !u!114 &1612305487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1612305483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f2cd87ca3774c899b6ca5b331fe33f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _baseStats: {fileID: 11400000, guid: 9fd16b04966fd9048b7da11eb48a1c83, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
