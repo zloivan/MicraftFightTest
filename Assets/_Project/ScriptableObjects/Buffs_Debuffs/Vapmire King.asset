@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7745c84439d149ba9faf74ccf65a682b, type: 3}
   m_Name: Vapmire King
   m_EditorClassIdentifier: 
-  _statsToChange:
-  - StatType: 3
-    OperatorType: 0
-    Value: 80
-  _duration: 0
-  Icon: {fileID: 21300000, guid: 4a39cb4b272639541b7bd5ac0649acf7, type: 3}
+  BuffName: 
+  StatsToChange: []
+  Duration: 0
+  IconAddress:
+    m_AssetGUID: 6fc27c9d7fc2d9448af6851bf935e6d2
+    m_SubObjectName: cloaks
+    m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_EditorAssetChanged: 1

@@ -124,7 +124,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.textmeshpro": {
-      "version": "3.0.6",
+      "version": "3.0.9",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -162,6 +162,22 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "com.zloivan.unityextensions": {
+      "version": "https://github.com/zloivan/Extensions.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "66c490042c2bb08db916ed725b0d65b1432784bc"
+    },
+    "com.zloivan.unityutilities": {
+      "version": "git@github.com:zloivan/UnityUtilities.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.zloivan.unityextensions": "git@github.com:zloivan/Extensions.git"
+      },
+      "hash": "4aeedf89275f8f07e61ded3002a4fd207212af8c"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",

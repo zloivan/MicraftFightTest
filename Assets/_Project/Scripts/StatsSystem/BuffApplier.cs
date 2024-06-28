@@ -7,6 +7,7 @@ namespace _Project.Scripts.StatsSystem
     {
         private readonly IStatModifierFactory _statModifierFactory;
 
+        private readonly Dictionary<StatBuff, IList<StatBuffValue>> _activeStatBuffs = new();
         public BuffApplier(IStatModifierFactory statModifierFactory)
         {
             _statModifierFactory = statModifierFactory;
@@ -16,7 +17,7 @@ namespace _Project.Scripts.StatsSystem
         {
             foreach (var modificationPack in buffsToApply.StatsToChange)
             {
-                var modifier = _statModifierFactory.Create(
+                StatModifier modifier = _statModifierFactory.Create(
                     modificationPack.StatType,
                     modificationPack.OperatorType,
                     modificationPack.Value,

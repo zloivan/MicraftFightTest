@@ -4,7 +4,7 @@ using _Project.Scripts.StatsSystem.OperationStrategies.abstractions;
 
 namespace _Project.Scripts.StatsSystem
 {
-    public class BasicStatModifierFactory : IStatModifierFactory
+    public class StatModifierFactory : IStatModifierFactory
     {
         public StatModifier Create(StatType statType, OperatorType operatorType, int value, float duration)
         {

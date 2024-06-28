@@ -12,10 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7745c84439d149ba9faf74ccf65a682b, type: 3}
   m_Name: Stone Skin
   m_EditorClassIdentifier: 
-  _statsToChange:
-  - StatType: 1
+  BuffName: Stone Skin
+  StatsToChange:
+  - StatType: 0
     OperatorType: 0
-    Value: 500
-  _duration: 0
-  Icon: {fileID: 0}
-  _id: 0
+    Value: 0
+  Duration: 0
+  IconAddress:
+    m_AssetGUID: 2f1eaeeaad36ee5469eff7ff158f37ba
+    m_SubObjectName: armor
+    m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_EditorAssetChanged: 1

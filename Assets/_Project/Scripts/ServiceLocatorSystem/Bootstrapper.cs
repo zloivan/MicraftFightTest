@@ -1,5 +1,5 @@
-﻿using _Project.Scripts.Utility.Extensions;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityExtensions;
 
 namespace _Project.Scripts.ServiceLocatorSystem
 {

@@ -46,7 +46,7 @@ namespace _Project.Scripts.AppEntryPoint
             ServiceLocator.Global.Register<IPlayerIconProvider>(_playerStatPanelPlayerIconsProvider);
             _initializbles.Add(_playerStatPanelPlayerIconsProvider);
             
-            ServiceLocator.Global.Register<IStatModifierFactory>(new BasicStatModifierFactory());
+            ServiceLocator.Global.Register<IStatModifierFactory>(new StatModifierFactory());
 
             ServiceLocator.Global.Register<IBuffProvider>(_directFromSceneBuffProvider);
         }

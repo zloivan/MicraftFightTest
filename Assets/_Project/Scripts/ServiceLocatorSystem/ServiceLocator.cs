@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using _Project.Scripts.Utility.Extensions;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityExtensions;
 
 namespace _Project.Scripts.ServiceLocatorSystem
 {

@@ -12,19 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7745c84439d149ba9faf74ccf65a682b, type: 3}
   m_Name: HalfAllStats
   m_EditorClassIdentifier: 
-  _statsToChange:
-  - StatType: 0
-    OperatorType: 3
-    Value: 50
-  - StatType: 1
-    OperatorType: 3
-    Value: 50
-  - StatType: 2
-    OperatorType: 3
-    Value: 50
-  - StatType: 3
-    OperatorType: 3
-    Value: 50
-  _duration: 0
-  Icon: {fileID: 21300000, guid: 4a39cb4b272639541b7bd5ac0649acf7, type: 3}
-  _id: 0
+  BuffName: Decrease All Stats By 50%
+  StatsToChange: []
+  Duration: 0
+  IconAddress:
+    m_AssetGUID: ae496f5dad56ea645b72d374a0376368
+    m_SubObjectName: book
+    m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_EditorAssetChanged: 1

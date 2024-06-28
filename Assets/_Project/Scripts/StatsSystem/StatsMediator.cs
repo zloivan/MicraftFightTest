@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using _Project.Scripts.StatsSystem.ModificationOrder;
@@ -7,9 +8,13 @@ namespace _Project.Scripts.StatsSystem
 {
     public class StatsMediator
     {
+        public event Action<List<StatModifier>> OnModifiersChanged;
+        
         private readonly List<StatModifier> _listModifiers = new();
         private readonly IStatModifierOder _statModifierOder = new NormalModificationOrder();
         private readonly Dictionary<StatType, IEnumerable<StatModifier>> _statTypeToModifiersCache = new();
+
+        public List<StatModifier> ListModifiers => _listModifiers;
 
         public void PerformQuery(object sender, Query query)
         {
@@ -26,9 +31,11 @@ namespace _Project.Scripts.StatsSystem
         {
             _listModifiers.Add(modifier);
             InvalidateCache(modifier.StatType);
-
+            OnModifiersChanged?.Invoke(_listModifiers);
+            
             modifier.OnDisposed += _ => _listModifiers.Remove(modifier);
             modifier.OnDisposed += m => InvalidateCache(m.StatType);
+            modifier.OnDisposed += m => OnModifiersChanged?.Invoke(_listModifiers);
         }
 
         private void InvalidateCache(StatType modifierType)
@@ -49,7 +56,7 @@ namespace _Project.Scripts.StatsSystem
 
         public void ClearModifiers()
         {
-            if (_listModifiers.Count == 0)
+            if (ListModifiers.Count == 0)
             {
                 return;
             }
