@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: DoubleDamage
   m_EditorClassIdentifier: 
   BuffName: Double Damage
+  BuffDescription: 
   StatsToChange:
-  - StatType: 0
-    OperatorType: 1
-    Value: 2
+    ModifiersDescriptions:
+    - StatBuff: 0
+      OperatorBuff: 1
+      Value: 2
   Duration: 0
   IconAddress:
     m_AssetGUID: 172774604c1bee84185a69041576525b

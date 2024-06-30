@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using _Project.Scripts.StatsSystem.ModificationOrder;
@@ -8,13 +7,10 @@ namespace _Project.Scripts.StatsSystem
 {
     public class StatsMediator
     {
-        public event Action<List<StatModifier>> OnModifiersChanged;
-        
         private readonly List<StatModifier> _listModifiers = new();
         private readonly IStatModifierOder _statModifierOder = new NormalModificationOrder();
         private readonly Dictionary<StatType, IEnumerable<StatModifier>> _statTypeToModifiersCache = new();
-
-        public List<StatModifier> ListModifiers => _listModifiers;
+        private readonly List<StatBuff> _activeBuffs = new();
 
         public void PerformQuery(object sender, Query query)
         {
@@ -27,58 +23,51 @@ namespace _Project.Scripts.StatsSystem
             query.Value = _statModifierOder.Apply(_statTypeToModifiersCache[query.StatType], query.Value);
         }
 
-        public void AddModifier(StatModifier modifier)
+        public void AddBuff(StatBuff newBuff)
         {
-            _listModifiers.Add(modifier);
-            InvalidateCache(modifier.StatType);
-            OnModifiersChanged?.Invoke(_listModifiers);
+            _activeBuffs.Add(newBuff);
+            foreach (var modifier in newBuff.Modifiers)
+            {
+                _listModifiers.Add(modifier);
+                InvalidateCache(modifier.StatType);
+            }
+
             
-            modifier.OnDisposed += _ => _listModifiers.Remove(modifier);
-            modifier.OnDisposed += m => InvalidateCache(m.StatType);
-            modifier.OnDisposed += m => OnModifiersChanged?.Invoke(_listModifiers);
+            newBuff.OnDisposed += RemoveBuff;
         }
+        
+        public void RemoveBuff(StatBuff buff)
+        {
+            if (!_activeBuffs.Contains(buff))
+                return;
+
+            buff.Dispose();
+            foreach (var modifier in buff.Modifiers)
+            {
+                _listModifiers.Remove(modifier);
+                InvalidateCache(modifier.StatType);
+            }
+
+            _activeBuffs.Remove(buff);
+        }
+        
 
         private void InvalidateCache(StatType modifierType)
         {
             _statTypeToModifiersCache.Remove(modifierType);
         }
 
-        public void RemoveModifier(StatModifier modifier)
-        {
-            if (_listModifiers.Contains(modifier) == false)
-            {
-                return;
-            }
-
-            modifier.Dispose();
-            _listModifiers.Remove(modifier);
-        }
-
-        public void ClearModifiers()
-        {
-            if (ListModifiers.Count == 0)
-            {
-                return;
-            }
-
-            foreach (var modifier in _listModifiers.ToList())
-            {
-                modifier.Dispose();
-            }
-
-            _listModifiers.Clear();
-        }
 
         public void Update(float deltaTime)
         {
-            foreach (var modifier in _listModifiers)
+            foreach (var buff in _activeBuffs)
             {
-                modifier.Update(deltaTime);
+                buff.Update(deltaTime);
             }
 
-            foreach (var modifier in _listModifiers.Where(m => m.MarkedForRemoval).ToList())
+            foreach (var buff in _activeBuffs.Where(b => b.MarkedForRemoval).ToList())
             {
-                modifier.Dispose();
+                buff.Dispose();
             }
         }
     }

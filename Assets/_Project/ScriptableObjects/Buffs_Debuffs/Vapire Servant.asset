@@ -10,28 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7745c84439d149ba9faf74ccf65a682b, type: 3}
-  m_Name: HalfAllStats
+  m_Name: Vapire Servant
   m_EditorClassIdentifier: 
-  BuffName: Plaig Debuff
-  BuffDescription: Decrease all stats by 50%
+  BuffName: Vapire Servant
+  BuffDescription: Add 10 vampirism
   StatsToChange:
     ModifiersDescriptions:
-    - StatBuff: 0
-      OperatorBuff: 2
-      Value: 50
-    - StatBuff: 1
-      OperatorBuff: 2
-      Value: 50
-    - StatBuff: 2
-      OperatorBuff: 2
-      Value: 50
     - StatBuff: 3
-      OperatorBuff: 2
-      Value: 50
+      OperatorBuff: 0
+      Value: 10
   Duration: 0
   IconAddress:
-    m_AssetGUID: ae496f5dad56ea645b72d374a0376368
-    m_SubObjectName: book
+    m_AssetGUID: 6fc27c9d7fc2d9448af6851bf935e6d2
+    m_SubObjectName: cloaks
     m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     m_EditorAssetChanged: 1

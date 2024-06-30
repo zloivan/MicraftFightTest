@@ -12,8 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7745c84439d149ba9faf74ccf65a682b, type: 3}
   m_Name: Vapmire King
   m_EditorClassIdentifier: 
-  BuffName: 
-  StatsToChange: []
+  BuffName: Dracula
+  BuffDescription: Double the vampire buff
+  StatsToChange:
+    ModifiersDescriptions:
+    - StatBuff: 3
+      OperatorBuff: 1
+      Value: 2
   Duration: 0
   IconAddress:
     m_AssetGUID: 6fc27c9d7fc2d9448af6851bf935e6d2

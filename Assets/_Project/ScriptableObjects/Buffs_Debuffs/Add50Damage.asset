@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: Add50Damage
   m_EditorClassIdentifier: 
   BuffName: Add 50 Damage
+  BuffDescription: 
   StatsToChange:
-  - StatType: 0
-    OperatorType: 0
-    Value: 50
+    ModifiersDescriptions:
+    - StatBuff: 0
+      OperatorBuff: 0
+      Value: 50
   Duration: 0
   IconAddress:
     m_AssetGUID: 172774604c1bee84185a69041576525b

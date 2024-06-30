@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
+using _Project.Scripts.PickupSystem;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityExtensions;
 
 namespace _Project.Scripts.StatsSystem
 {
@@ -10,55 +10,34 @@ namespace _Project.Scripts.StatsSystem
     {
         public string BuffName;
         public string BuffDescription;
-        public List<StatBuffValue> StatsToChange;
+        public StatBuffContainer StatsToChange;
         public float Duration;
         public AssetReferenceSprite IconAddress; //TODO use addressable address
 
-        public string IconAddressString { get; private set; }
-
-        private void OnValidate()
-        {
-            IconAddressString = IconAddress != null ? IconAddress.AssetGUID : string.Empty;
-        }
 
         public StatBuff GetStatBuff()
         {
-            Debug.Assert(!string.IsNullOrEmpty(IconAddressString), $"Address for {name} sprite must be defined",
+            Debug.Assert(!string.IsNullOrEmpty(IconAddress.AssetGUID), $"Address for {name} sprite must be defined",
                 this);
 
-            Debug.Assert(!string.IsNullOrEmpty(BuffName),$"Buff Name for {name} must be defined",this);
+            Debug.Assert(!string.IsNullOrEmpty(BuffName), $"Buff Name for {name} must be defined", this);
 
-            Debug.Assert(StatsToChange is { Count: > 0 }, "Buffs modifiers values must be defined",
+            Debug.Assert(StatsToChange.ModifiersDescriptions is { Count: > 0 },
+                "StatsToChange.ModifiersDescBuffs modifiers values must be defined",
                 this);
-            
-            return new StatBuff(StatsToChange, Duration, IconAddressString, BuffName, BuffDescription);
+
+            var factory = new StatBuffFactory();
+
+            return factory.Create(StatsToChange, Duration, BuffName, BuffDescription, IconAddress.AssetGUID);
         }
-    }
-
-    public class StatBuff
-    {
-        public readonly string Name;
-
-        public readonly List<StatBuffValue> StatsToChange;
-
-        public readonly float Duration;
-
-        public readonly string IconAddress;
-
-        public readonly string Description;
 
 
-        public StatBuff(List<StatBuffValue> statsToChange,
-            float duration,
-            string iconAddress,
-            string name,
-            string description)
+        private void OnValidate()
         {
-            StatsToChange = statsToChange;
-            Duration = duration;
-            IconAddress = iconAddress;
-            Name = name;
-            Description = description;
+            if (BuffName.IsBlank())
+            {
+                BuffName = name;
+            }
         }
     }
 }

@@ -17,14 +17,12 @@ namespace _Project.Scripts.Characters.Test
         [SerializeField]
         private GameObject _buffIconPrefab;
 
-        private BuffApplier _applier;
         private IBuffProvider _buffProvider;
 
         private IAddressableService _addressableService;
         
         private void Start()
         {
-            _applier = new BuffApplier(ServiceLocator.For(this).Get<IStatModifierFactory>());
             _buffProvider = ServiceLocator.For(this).Get<IBuffProvider>();
             _addressableService = ServiceLocator.For(this).Get<IAddressableService>();
         }
@@ -34,7 +32,7 @@ namespace _Project.Scripts.Characters.Test
         {
             var buffsToApplie = _buffProvider.GetBuffs();
 
-            _applier.ApplyBuffs(_entity, buffsToApplie);
+            BuffApplier.ApplyBuffs(_entity, buffsToApplie);
 
             Debug.Log($"{_entity.Stats}");
         }
@@ -49,11 +47,11 @@ namespace _Project.Scripts.Characters.Test
         }
         
 
-        [ContextMenu("Reset to Base")]
-        public void TestResetStats()
-        {
-            _entity.Stats.Mediator.ClearModifiers();
-            Debug.Log($"{_entity.Stats}");
-        }
+        // [ContextMenu("Reset to Base")]
+        // public void TestResetStats()
+        // {
+        //     _entity.Stats.Mediator.ClearModifiers();
+        //     Debug.Log($"{_entity.Stats}");
+        // }
     }
 }

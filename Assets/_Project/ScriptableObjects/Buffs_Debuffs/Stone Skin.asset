@@ -13,10 +13,15 @@ MonoBehaviour:
   m_Name: Stone Skin
   m_EditorClassIdentifier: 
   BuffName: Stone Skin
+  BuffDescription: Increase armor and health by 200
   StatsToChange:
-  - StatType: 0
-    OperatorType: 0
-    Value: 0
+    ModifiersDescriptions:
+    - StatBuff: 1
+      OperatorBuff: 0
+      Value: 200
+    - StatBuff: 2
+      OperatorBuff: 0
+      Value: 200
   Duration: 0
   IconAddress:
     m_AssetGUID: 2f1eaeeaad36ee5469eff7ff158f37ba
