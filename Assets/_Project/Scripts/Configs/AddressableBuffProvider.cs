@@ -1,11 +1,13 @@
 using System.Collections.Generic;
+using System.Threading;
 using _Project.Scripts.AddressableSystem;
+using _Project.Scripts.AppEntryPoint;
 using _Project.Scripts.StatsSystem;
 using Cysharp.Threading.Tasks;
 
 namespace _Project.Scripts.Configs
 {
-    public class AddressableBuffProvider : IBuffProvider
+    public class AddressableBuffProvider : IBuffProvider, IInitializeble
     {
         private readonly string _address;
         private readonly IAddressableService _addressableService;
@@ -31,6 +33,11 @@ namespace _Project.Scripts.Configs
         public IEnumerable<StatBuff> GetBuffs()
         {
             return _buffs;
+        }
+
+        public UniTask Initialize(CancellationToken cancellationToken)
+        {
+            return LoadBuffsByTag(_address);
         }
     }
 }

@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 1fd0d6c3f7b54a14a9ce4fc5fa651a3d
   m_currentHash:
     serializedVersion: 2
-    Hash: c1bdc745e422ee8a73692b75eacf8c7e
+    Hash: c8c08d25a7aa6b168b1416652c57e988
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -89,6 +89,7 @@ MonoBehaviour:
     - default
     - ability_icon
     - scene
+    - baseBuff
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 6e1f47fdeb7a9ab4cb9852982a153ea1, type: 2}

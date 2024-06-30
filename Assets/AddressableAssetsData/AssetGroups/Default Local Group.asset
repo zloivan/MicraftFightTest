@@ -85,6 +85,51 @@ MonoBehaviour:
   - m_GUID: 7b3dff5a068bc4445ab42bc93fab768f
     m_Address: MainNewSystem
     m_ReadOnly: 0
+    m_SerializedLabels:
+    - baseBuff
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a034716dbed485340bf6fc76cf6317ed
+    m_Address: DoubleDamage
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - baseBuff
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1ab24075945949e4a8c0fbbb4d30e38a
+    m_Address: Vapmire King
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - baseBuff
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 654f4df9f4ca1814dbade23aa50d91ba
+    m_Address: Vamp Debuff
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - baseBuff
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 46bc13bffb98a0b4a8082e7d83b72243
+    m_Address: Stone Skin
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - baseBuff
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 022db95371d79d641b733200df465560
+    m_Address: Titan
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cf092a0f56722254f8be556c99b6cd9f
+    m_Address: Add50Damage
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1e4e946708235f04182ad69919f389e2
+    m_Address: HalfAllStats
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a9d43a3d88491994795e73ba32e7e199
+    m_Address: Vapire Servant
+    m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0

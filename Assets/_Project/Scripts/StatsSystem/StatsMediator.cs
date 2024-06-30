@@ -5,12 +5,15 @@ using _Project.Scripts.StatsSystem.ModificationOrder.abstractions;
 
 namespace _Project.Scripts.StatsSystem
 {
-    public class StatsMediator
+    public class StatsMediator : IStatsMediator
     {
         private readonly List<StatModifier> _listModifiers = new();
         private readonly IStatModifierOder _statModifierOder = new NormalModificationOrder();
         private readonly Dictionary<StatType, IEnumerable<StatModifier>> _statTypeToModifiersCache = new();
         private readonly List<StatBuff> _activeBuffs = new();
+
+        //No reference for collection is provided
+        public List<StatBuff> ActiveBuffs => _activeBuffs.ToList();
 
         public void PerformQuery(object sender, Query query)
         {
@@ -40,8 +43,7 @@ namespace _Project.Scripts.StatsSystem
         {
             if (!_activeBuffs.Contains(buff))
                 return;
-
-            buff.Dispose();
+            
             foreach (var modifier in buff.Modifiers)
             {
                 _listModifiers.Remove(modifier);
@@ -50,7 +52,16 @@ namespace _Project.Scripts.StatsSystem
 
             _activeBuffs.Remove(buff);
         }
-        
+
+
+        public void ClearBuffs()
+        {
+            var activeBuffs = _activeBuffs.ToList();
+            foreach (var buff in activeBuffs)
+            {
+                buff.Dispose();
+            }
+        }
 
         private void InvalidateCache(StatType modifierType)
         {

@@ -12,7 +12,6 @@ namespace _Project.Scripts.StatsSystem
         public string IconAddress { get; private set; }
         public string Description { get; private set; }
 
-
         public List<StatModifier> Modifiers { get; }
         public bool MarkedForRemoval { get; private set; }
 
@@ -33,6 +32,12 @@ namespace _Project.Scripts.StatsSystem
         {
             MarkedForRemoval = false;
             OnDisposed?.Invoke(this);
+        }
+
+        public override string ToString()
+        {
+            return
+                $"{nameof(Name)}: {Name}, {nameof(IconAddress)}: {IconAddress}, {nameof(Description)}: {Description}, {nameof(Modifiers)}: {Modifiers}, {nameof(MarkedForRemoval)}: {MarkedForRemoval}";
         }
 
 

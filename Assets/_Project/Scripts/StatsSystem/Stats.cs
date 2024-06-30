@@ -3,7 +3,7 @@ namespace _Project.Scripts.StatsSystem
     public class Stats
     {
         private readonly BaseStats _baseStats;
-        public StatsMediator Mediator { get; }
+        public IStatsMediator Mediator { get; }
 
         public int Damage
         {
@@ -53,7 +53,7 @@ namespace _Project.Scripts.StatsSystem
             }
         }
 
-        public Stats(StatsMediator mediator, BaseStats baseStats)
+        public Stats(IStatsMediator mediator, BaseStats baseStats)
         {
             _baseStats = baseStats;
             Mediator = mediator;

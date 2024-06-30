@@ -9,11 +9,21 @@ namespace _Project.Scripts.Characters
         [SerializeField]
         private BaseStats _baseStats;
 
+        [SerializeField]
+        private bool LogMediator;
+
         public Stats Stats { get; set; }
 
         private void Awake()
         {
-            Stats = new Stats(new StatsMediator(), _baseStats);
+            IStatsMediator mediator = new StatsMediator();
+
+            if (LogMediator)
+            {
+                mediator = new StatsMediatorWithLogger(mediator);
+            }
+
+            Stats = new Stats(mediator, _baseStats);
         }
 
         private void Update()

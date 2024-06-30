@@ -3,6 +3,7 @@ using _Project.Scripts.Configs;
 using _Project.Scripts.ServiceLocatorSystem;
 using _Project.Scripts.StatsSystem;
 using UnityEngine;
+using Logger = Utilities.Logger;
 
 namespace _Project.Scripts.Characters.Test
 {
@@ -20,7 +21,7 @@ namespace _Project.Scripts.Characters.Test
         private IBuffProvider _buffProvider;
 
         private IAddressableService _addressableService;
-        
+
         private void Start()
         {
             _buffProvider = ServiceLocator.For(this).Get<IBuffProvider>();
@@ -45,13 +46,19 @@ namespace _Project.Scripts.Characters.Test
             //     modifier.
             // }
         }
-        
 
-        // [ContextMenu("Reset to Base")]
-        // public void TestResetStats()
-        // {
-        //     _entity.Stats.Mediator.ClearModifiers();
-        //     Debug.Log($"{_entity.Stats}");
-        // }
+
+        [ContextMenu("Reset to Base")]
+        public void TestResetStats()
+        {
+            _entity.Stats.Mediator.ClearBuffs();
+            Debug.Log($"{_entity.Stats}");
+        }
+
+        [ContextMenu("Output buffs")]
+        public void Output()
+        {
+            Logger.Log($"{string.Join(' ', _entity.Stats.Mediator.ActiveBuffs)}", Color.green);
+        }
     }
 }

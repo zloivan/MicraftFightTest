@@ -27,28 +27,31 @@ namespace _Project.Scripts.AppEntryPoint
         [SerializeField]
         private DirectFromSceneBuffProvider _directFromSceneBuffProvider;
 
-        
 
-        private DataProviderFromAddressables _dataProviderFromAddressables;
-        private PlayerIconsProvider _playerStatPanelPlayerIconsProvider;
+        //private DataProviderFromAddressables _dataProviderFromAddressables;
+        //private PlayerIconsProvider _playerStatPanelPlayerIconsProvider;
         private readonly List<IInitializeble> _initializbles = new();
 
         private void Awake()
         {
             _addressablesService = new AddressablesService();
             ServiceLocator.Global.Register<IAddressableService>(_addressablesService);
-            
-            _dataProviderFromAddressables = new DataProviderFromAddressables(_dataFileName);
-            ServiceLocator.Global.Register<IDataProvider>(_dataProviderFromAddressables);
-            _initializbles.Add(_dataProviderFromAddressables);
-            
-            _playerStatPanelPlayerIconsProvider = new PlayerIconsProvider(_iconsFolderPath);
-            ServiceLocator.Global.Register<IPlayerIconProvider>(_playerStatPanelPlayerIconsProvider);
-            _initializbles.Add(_playerStatPanelPlayerIconsProvider);
-            
+
+            var dataProviderFromAddressables = new DataProviderFromAddressables(_dataFileName);
+            ServiceLocator.Global.Register<IDataProvider>(dataProviderFromAddressables);
+            _initializbles.Add(dataProviderFromAddressables);
+
+            var playerStatPanelPlayerIconsProvider = new PlayerIconsProvider(_iconsFolderPath);
+            ServiceLocator.Global.Register<IPlayerIconProvider>(playerStatPanelPlayerIconsProvider);
+            _initializbles.Add(playerStatPanelPlayerIconsProvider);
+
             ServiceLocator.Global.Register<IStatBuffFactory>(new StatBuffFactory());
 
-            ServiceLocator.Global.Register<IBuffProvider>(_directFromSceneBuffProvider);
+            var addressableBuffProvider = new AddressableBuffProvider("baseBuff",
+                _addressablesService);
+
+            ServiceLocator.Global.Register<IBuffProvider>(addressableBuffProvider);
+            _initializbles.Add(addressableBuffProvider);
         }
 
         private async void Start()
