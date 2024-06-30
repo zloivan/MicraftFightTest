@@ -34,12 +34,6 @@ namespace _Project.Scripts.StatsSystem
             OnDisposed?.Invoke(this);
         }
 
-        public override string ToString()
-        {
-            return
-                $"{nameof(Name)}: {Name}, {nameof(IconAddress)}: {IconAddress}, {nameof(Description)}: {Description}, {nameof(Modifiers)}: {Modifiers}, {nameof(MarkedForRemoval)}: {MarkedForRemoval}";
-        }
-
 
         public class Builder
         {

@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49f1a5e86f644fad9690412a81ba2649, type: 3}
   m_Name: BaseStats
   m_EditorClassIdentifier: 
-  Damage: 10
-  Defence: 20
-  Health: 100
-  Vampirism: 0
+  Base:
+  - statType: 0
+    value: 10
+  - statType: 1
+    value: 20
+  - statType: 2
+    value: 100
+  - statType: 3
+    value: 0

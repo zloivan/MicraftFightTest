@@ -1,3 +1,4 @@
+using System.Linq;
 using _Project.Scripts.AddressableSystem;
 using _Project.Scripts.Configs;
 using _Project.Scripts.ServiceLocatorSystem;
@@ -39,15 +40,6 @@ namespace _Project.Scripts.Characters.Test
         }
 
 
-        public void ApplyStats()
-        {
-            // foreach (var modifier in _entity.Stats.Mediator.ListModifiers)
-            // {
-            //     modifier.
-            // }
-        }
-
-
         [ContextMenu("Reset to Base")]
         public void TestResetStats()
         {
@@ -58,7 +50,7 @@ namespace _Project.Scripts.Characters.Test
         [ContextMenu("Output buffs")]
         public void Output()
         {
-            Logger.Log($"{string.Join(' ', _entity.Stats.Mediator.ActiveBuffs)}", Color.green);
+            Logger.Log($"{string.Join('\n', _entity.Stats.Mediator.ActiveBuffs.Select(e=>e.Name))}", Color.green);
         }
     }
 }
