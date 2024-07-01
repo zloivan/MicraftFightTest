@@ -53,12 +53,9 @@ namespace _Project.Scripts.CameraControllSystem
         {
             ServiceLocator.For(this).Register<ICameraController>(this);
             ServiceLocator.For(this).Register(_camera);
-        }
-
-        private void Start()
-        {
             _cameraModel = ServiceLocator.For(this).Get<IDataProvider>().Data.cameraSettings;
         }
+
 
         private void Update()
         {

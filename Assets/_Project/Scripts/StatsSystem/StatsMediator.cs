@@ -12,8 +12,9 @@ namespace _Project.Scripts.StatsSystem
         private readonly Dictionary<StatType, IEnumerable<StatModifier>> _statTypeToModifiersCache = new();
         private readonly List<StatBuff> _activeBuffs = new();
 
-        //No reference for collection is provided
+        //No reference for collection is provided intentionally
         public List<StatBuff> ActiveBuffs => _activeBuffs.ToList();
+        
 
         public void PerformQuery(object sender, Query query)
         {
@@ -29,6 +30,7 @@ namespace _Project.Scripts.StatsSystem
         public void AddBuff(StatBuff newBuff)
         {
             _activeBuffs.Add(newBuff);
+            
             foreach (var modifier in newBuff.Modifiers)
             {
                 _listModifiers.Add(modifier);
@@ -43,6 +45,7 @@ namespace _Project.Scripts.StatsSystem
         {
             if (!_activeBuffs.Contains(buff))
                 return;
+            
             
             foreach (var modifier in buff.Modifiers)
             {
