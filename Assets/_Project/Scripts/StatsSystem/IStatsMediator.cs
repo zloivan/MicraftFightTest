@@ -7,11 +7,11 @@ namespace _Project.Scripts.StatsSystem
     {
         void AddBuff(StatBuff newBuff);
         void RemoveBuff(StatBuff buff);
-
         void ClearBuffs();
         void PerformQuery(object sender, Query query);
         void Update(float deltaTime);
         List<StatBuff> ActiveBuffs { get; }
-        
+
+        event Action<StatType> OnModifierChange;
     }
 }

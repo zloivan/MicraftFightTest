@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 
 namespace _Project.Scripts.StatsSystem
 {

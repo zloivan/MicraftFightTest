@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using _Project.Scripts.StatsSystem;
 using UnityEngine;
 using Logger = Utilities.Logger;
@@ -15,6 +14,12 @@ namespace _Project.Scripts.Characters
         public StatsMediatorWithLogger(IStatsMediator mediator)
         {
             _mediator = mediator;
+            OnModifierChange += OutputModifierChanged;
+        }
+
+        private void OutputModifierChanged(StatType obj)
+        {
+            Logger.Log($"{obj}", Color.clear);
         }
 
         public void AddBuff(StatBuff newBuff)
@@ -51,6 +56,6 @@ namespace _Project.Scripts.Characters
         }
 
         public List<StatBuff> ActiveBuffs => _mediator.ActiveBuffs;
-        public event Action OnBuffNumberChanged;
+        public event Action<StatType> OnModifierChange;
     }
 }

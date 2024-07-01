@@ -47,17 +47,16 @@ namespace _Project.Scripts.Characters.Test
         [ContextMenu("Apply Buffs")]
         public void ApplyBuffs()
         {
-            _playerOne.Stats.Mediator.ClearBuffs();
-            _playerTwo.Stats.Mediator.ClearBuffs();
-            
-            
             var buffsToApplie = _buffProvider.GetBuffs().ToList();
 
-            var buffsForPlayerOne = buffsToApplie.TakeRandom(Random.Range(_dataProvider.Data.settings.buffCountMin,
-                _dataProvider.Data.settings.buffCountMax));
+            var minBuffCount = _dataProvider.Data.settings.buffCountMin;
+            var maxBuffCount = _dataProvider.Data.settings.buffCountMax;
             
-            var buffsForPlayerTwo = buffsToApplie.TakeRandom(Random.Range(_dataProvider.Data.settings.buffCountMin,
-                _dataProvider.Data.settings.buffCountMax));
+            var buffsForPlayerOne = buffsToApplie.TakeRandom(Random.Range(minBuffCount,
+                maxBuffCount));
+
+            var buffsForPlayerTwo = buffsToApplie.TakeRandom(Random.Range(minBuffCount,
+                maxBuffCount));
 
             BuffApplier.ApplyBuffs(_playerOne, buffsForPlayerOne);
             BuffApplier.ApplyBuffs(_playerTwo, buffsForPlayerTwo);
@@ -71,7 +70,10 @@ namespace _Project.Scripts.Characters.Test
         public void TestResetStats()
         {
             _playerOne.Stats.Mediator.ClearBuffs();
-            Debug.Log($"{_playerOne.Stats}");
+            _playerTwo.Stats.Mediator.ClearBuffs();
+
+            Logger.Log($"{_playerOne.Stats}", Color.clear);
+            Logger.Log($"{_playerTwo.Stats}", Color.clear);
         }
 
         [ContextMenu("Output buffs")]
@@ -88,7 +90,7 @@ namespace _Project.Scripts.Characters.Test
                 .WithAction(playerTwo =>
                 {
                     Logger.Log($"Player One attack player two", Color.red);
-                    playerTwo.CurrentHealth -= _playerOne.Stats.GetStat(StatType.Damage);
+                    playerTwo.TakeDamage(_playerOne.Stats.GetStatByType(StatType.Damage));
                     Logger.Log($"{playerTwo.CurrentHealth}", Color.green);
                 })
                 .Build();
@@ -101,11 +103,11 @@ namespace _Project.Scripts.Characters.Test
         public void PlayerTwoAttack()
         {
             var attackCommand = new AttackCommand.Builder(new List<IEntity> { _playerOne })
-                .WithAction(_playerOne =>
+                .WithAction(playerOne =>
                 {
                     Logger.Log($"Player Two attack player One", Color.red);
-                    _playerOne.CurrentHealth -= _playerTwo.Stats.GetStat(StatType.Damage);
-                    Logger.Log($"{_playerOne.CurrentHealth}", Color.green);
+                    playerOne.TakeDamage(_playerTwo.Stats.GetStatByType(StatType.Damage));
+                    Logger.Log($"{playerOne.CurrentHealth}", Color.green);
                 })
                 .Build();
 

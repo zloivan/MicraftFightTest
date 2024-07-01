@@ -16,45 +16,48 @@ namespace _Project.Scripts.Characters
         private bool LogMediator;
 
         private readonly Queue<ICommand<IEntity>> _commands = new();
-        private int _currentHealth;
-
-        public int CurrentHealth
-        {
-            get => _currentHealth;
-            set
-            {
-                _currentHealth = value;
-
-                if (_currentHealth > 0) 
-                    return;
-                Logger.Log($"Entity {gameObject.name} died.", Color.red);
-                Destroy(gameObject);
-            }
-        }
 
         public Stats Stats { get; set; }
 
+        private HealthController _healthController;
+
+        public int CurrentHealth => _healthController.CurrentHealth;
+
         private void Awake()
         {
+            Logger.Log($"Awake called for {name}, {gameObject.name}", Color.blue);
             Stats = new Stats(LogMediator ? new StatsMediatorWithLogger(new StatsMediator()) : new StatsMediator(),
                 _baseStats);
 
-            CurrentHealth = Stats.GetStat(StatType.Health);
+            _healthController = new HealthController(Stats.GetStatByType(StatType.Health));
 
-            Stats.SubscribeListenerToStatChange(StatType.Health, OnStatChange);
+            _healthController.OnDeath += HandleDeath;
+            _healthController.OnMaxHealthChanged += HandleMaxHealthChanged;
+
+            Stats.SubscribeToStatChange(StatType.Health, OnMaxHealthChanged);
         }
 
-        public void OnStatChange(int newMaxHealth)
+        private void HandleMaxHealthChanged(int newMaxHealth)
         {
-            CurrentHealth = newMaxHealth;
+            Logger.Log($"MaxHealth changed to {newMaxHealth}", Color.clear);
         }
-        
+
+        private void HandleDeath()
+        {
+            Logger.Log($"Entity {gameObject.name} died.", Color.red);
+            Destroy(gameObject);
+        }
+
         private void Update()
         {
             Stats.Mediator.Update(Time.deltaTime);
             ExecuteCommand();
         }
 
+        private void OnMaxHealthChanged(int newMaxHealth)
+        {
+            _healthController.AdjustMaxHealth(newMaxHealth);
+        }
 
         private void ExecuteCommand()
         {
@@ -72,6 +75,11 @@ namespace _Project.Scripts.Characters
         public void Accept(IVisitor visitor)
         {
             visitor.Visit(this);
+        }
+        
+        public void TakeDamage(int damage)//TODO TEMP
+        {
+            _healthController.TakeDamage(damage);
         }
     }
 }

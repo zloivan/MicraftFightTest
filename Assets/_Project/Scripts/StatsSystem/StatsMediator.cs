@@ -1,20 +1,46 @@
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using _Project.Scripts.StatsSystem.ModificationOrder;
 using _Project.Scripts.StatsSystem.ModificationOrder.abstractions;
+using Unity.VisualScripting;
 
 namespace _Project.Scripts.StatsSystem
 {
     public class StatsMediator : IStatsMediator
     {
-        private readonly List<StatModifier> _listModifiers = new();
+        public event Action<StatType> OnModifierChange;
+        
+        private readonly ObservableCollection<StatModifier> _listModifiers = new();
         private readonly IStatModifierOder _statModifierOder = new NormalModificationOrder();
         private readonly Dictionary<StatType, IEnumerable<StatModifier>> _statTypeToModifiersCache = new();
         private readonly List<StatBuff> _activeBuffs = new();
 
         //No reference for collection is provided intentionally
         public List<StatBuff> ActiveBuffs => _activeBuffs.ToList();
-        
+
+        public StatsMediator()
+        {
+            _listModifiers.CollectionChanged += (_, args) =>
+            {
+                if (args.NewItems != null)
+                {
+                    foreach (StatModifier modifier in args.NewItems)
+                    {
+                        OnModifierChange?.Invoke(modifier.StatType);
+                    }
+                }
+
+                if (args.OldItems != null)
+                {
+                    foreach (StatModifier modifier in args.OldItems)
+                    {
+                        OnModifierChange?.Invoke(modifier.StatType);
+                    }
+                }
+            };
+        }
 
         public void PerformQuery(object sender, Query query)
         {
@@ -31,11 +57,12 @@ namespace _Project.Scripts.StatsSystem
         {
             _activeBuffs.Add(newBuff);
             
-            foreach (var modifier in newBuff.Modifiers)
+            foreach (var statType in newBuff.Modifiers.Select(m=>m.StatType).Distinct())
             {
-                _listModifiers.Add(modifier);
-                InvalidateCache(modifier.StatType);
+                InvalidateCache(statType);
             }
+            
+            _listModifiers.AddRange(newBuff.Modifiers);
 
             
             newBuff.OnDisposed += RemoveBuff;
@@ -46,16 +73,14 @@ namespace _Project.Scripts.StatsSystem
             if (!_activeBuffs.Contains(buff))
                 return;
             
-            
             foreach (var modifier in buff.Modifiers)
             {
-                _listModifiers.Remove(modifier);
                 InvalidateCache(modifier.StatType);
+                _listModifiers.Remove(modifier);
             }
 
             _activeBuffs.Remove(buff);
         }
-
 
         public void ClearBuffs()
         {
@@ -65,12 +90,6 @@ namespace _Project.Scripts.StatsSystem
                 buff.Dispose();
             }
         }
-
-        private void InvalidateCache(StatType modifierType)
-        {
-            _statTypeToModifiersCache.Remove(modifierType);
-        }
-
 
         public void Update(float deltaTime)
         {
@@ -83,6 +102,11 @@ namespace _Project.Scripts.StatsSystem
             {
                 buff.Dispose();
             }
+        }
+
+        private void InvalidateCache(StatType modifierType)
+        {
+            _statTypeToModifiersCache.Remove(modifierType);
         }
     }
 }
