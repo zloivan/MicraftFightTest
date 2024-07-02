@@ -12,7 +12,7 @@ namespace _Project.Scripts.PickupSystem
 
         protected override void ApplyPickupEffect(Entity entity)
         {
-            entity.Stats.Mediator.AddBuff(_buffConfig.GetStatBuff());
+            entity.StatsController.Mediator.AddBuff(_buffConfig.GetStatBuff());
         }
     }
 }

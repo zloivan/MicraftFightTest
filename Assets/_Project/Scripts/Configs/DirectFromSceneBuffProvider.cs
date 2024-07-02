@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using _Project.Scripts.StatsSystem;
 using UnityEngine;
@@ -9,7 +8,6 @@ namespace _Project.Scripts.Configs
     {
         [SerializeField]
         private List<StatBuffSO> _buffs;
-
 
         public IEnumerable<StatBuff> GetBuffs()
         {

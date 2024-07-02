@@ -1,11 +1,13 @@
 using System;
+using _Project.Scripts.Characters;
 
-public class HealthController
+public class HealthController : IHealthController
 {
     public event Action OnDeath;
     public event Action<int> OnMaxHealthChanged;
     private int _currentHealth;
     private int _maxHealth;
+
     public int CurrentHealth
     {
         get => _currentHealth;

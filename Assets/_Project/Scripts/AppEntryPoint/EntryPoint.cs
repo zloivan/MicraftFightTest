@@ -1,7 +1,12 @@
 using System.Collections.Generic;
 using System.Threading;
+using _Project.Scripts.AbilitySystem;
 using _Project.Scripts.AddressableSystem;
+using _Project.Scripts.Characters;
 using _Project.Scripts.Characters.Test;
+using _Project.Scripts.CombatSystem;
+using _Project.Scripts.CombatSystem.abstractions;
+using _Project.Scripts.CombatSystem.CombatModifiers;
 using _Project.Scripts.Configs;
 using _Project.Scripts.PickupSystem;
 using _Project.Scripts.ServiceLocatorSystem;
@@ -52,6 +57,13 @@ namespace _Project.Scripts.AppEntryPoint
 
             ServiceLocator.Global.Register<IBuffProvider>(addressableBuffProvider);
             _initializbles.Add(addressableBuffProvider);
+
+
+            var combatController = new CombatController(
+                new List<ICombatModifier> { new CombatCriticalHitModifier() });
+            
+            ServiceLocator.Global.Register<ICombatController>(combatController);
+            ServiceLocator.Global.Register<IAbilityFactory>(new AbilityFactory(combatController));
         }
 
         private async void Start()

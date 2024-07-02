@@ -32,15 +32,16 @@ namespace _Project.Scripts.Characters.Test
         private IBuffProvider _buffProvider;
         private IAddressableService _addressableService;
         private IDataProvider _dataProvider;
+        private IAbilityController _abilityController;
 
         private void Start()
         {
             _buffProvider = ServiceLocator.For(this).Get<IBuffProvider>();
             _addressableService = ServiceLocator.For(this).Get<IAddressableService>();
             _dataProvider = ServiceLocator.For(this).Get<IDataProvider>();
-
-
+            
             _cameraController.SetupLookAtPosition((_playerOne.transform.position + _playerTwo.transform.position) / 2);
+            
         }
 
         [ContextMenu("Apply Buffs")]
@@ -60,26 +61,26 @@ namespace _Project.Scripts.Characters.Test
             BuffApplier.ApplyBuffs(_playerOne, buffsForPlayerOne);
             BuffApplier.ApplyBuffs(_playerTwo, buffsForPlayerTwo);
 
-            Debug.Log($"Player One: {_playerOne.Stats}");
-            Debug.Log($"Player Two: {_playerTwo.Stats}");
+            Debug.Log($"Player One: {_playerOne.StatsController}");
+            Debug.Log($"Player Two: {_playerTwo.StatsController}");
         }
 
 
         [ContextMenu("Reset to Base")]
         public void TestResetStats()
         {
-            _playerOne.Stats.Mediator.ClearBuffs();
-            _playerTwo.Stats.Mediator.ClearBuffs();
+            _playerOne.StatsController.Mediator.ClearBuffs();
+            _playerTwo.StatsController.Mediator.ClearBuffs();
 
-            Logger.Log($"{_playerOne.Stats}", Color.clear);
-            Logger.Log($"{_playerTwo.Stats}", Color.clear);
+            Logger.Log($"{_playerOne.StatsController}", Color.clear);
+            Logger.Log($"{_playerTwo.StatsController}", Color.clear);
         }
 
         [ContextMenu("Output buffs")]
         public void Output()
         {
-            Logger.Log($"{string.Join('\n', _playerOne.Stats.Mediator.ActiveBuffs.Select(e => e.Name))}", Color.green);
-            Logger.Log($"{string.Join('\n', _playerTwo.Stats.Mediator.ActiveBuffs.Select(e => e.Name))}", Color.green);
+            Logger.Log($"{string.Join('\n', _playerOne.StatsController.Mediator.ActiveBuffs.Select(e => e.Name))}", Color.green);
+            Logger.Log($"{string.Join('\n', _playerTwo.StatsController.Mediator.ActiveBuffs.Select(e => e.Name))}", Color.green);
         }
 
         [ContextMenu("Player One Attack player Two")]
@@ -89,8 +90,8 @@ namespace _Project.Scripts.Characters.Test
                 .WithAction(playerTwo =>
                 {
                     Logger.Log($"Player One attack player two", Color.red);
-                    playerTwo.TakeDamage(_playerOne.Stats.GetStatByType(StatType.Damage));
-                    Logger.Log($"{playerTwo.CurrentHealth}", Color.green);
+                    //playerTwo.TakeDamage(_playerOne.StatsController.GetStatByType(StatType.Damage));
+                    //Logger.Log($"{playerTwo.CurrentHealth}", Color.green);
                 })
                 .Build();
 
@@ -105,8 +106,8 @@ namespace _Project.Scripts.Characters.Test
                 .WithAction(playerOne =>
                 {
                     Logger.Log($"Player Two attack player One", Color.red);
-                    playerOne.TakeDamage(_playerTwo.Stats.GetStatByType(StatType.Damage));
-                    Logger.Log($"{playerOne.CurrentHealth}", Color.green);
+                    //playerOne.TakeDamage(_playerTwo.StatsController.GetStatByType(StatType.Damage));
+                    //Logger.Log($"{playerOne.CurrentHealth}", Color.green);
                 })
                 .Build();
 

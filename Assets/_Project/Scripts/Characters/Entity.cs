@@ -9,56 +9,73 @@ namespace _Project.Scripts.Characters
 {
     public class Entity : MonoBehaviour, IVisitable, IEntity
     {
-        [SerializeField]
-        private BaseStats _baseStats;
+        [SerializeField] private BaseStats _baseStats;
+        [SerializeField] private bool _logMediator;
 
-        [SerializeField]
-        private bool _logMediator;
 
-        public Stats Stats { get; private set; }
+        public IAbilityController AbilityController { get; }
+        public IStatController StatsController { get; private set; }
+        public IHealthController HealthController { get; private set; }
+
 
         private readonly Queue<ICommand<IEntity>> _commands = new();
-        private HealthController _healthController;
 
-        public int CurrentHealth => _healthController.CurrentHealth;
+
+        public void EnqueueCommand(ICommand<IEntity> command)
+        {
+            _commands.Enqueue(command);
+        }
+
+        public void Accept(IVisitor visitor) //TODO Implement visit of components
+        {
+            visitor.Visit(this);
+        }
+
+        // public void TakeDamage(int damage)//TODO TEMP
+
+
+        // {
+
+
+        //     HealthController.TakeDamage(damage);
+
+
+        // }
+
+
+        // public int GetStatValue(StatType statType)
+
+
+        // {
+
+
+        //     throw new NotImplementedException();
+
+
+        // }
+
 
         private void Awake()
         {
-            Logger.Log($"Awake called for {name}, {gameObject.name}", Color.blue);
-            Stats = new Stats(_logMediator ? new StatsMediatorWithLogger(new StatsMediator()) : new StatsMediator(),
+            StatsController = new StatsController(_logMediator ? new StatsMediatorWithLogger(new StatsMediator()) : new StatsMediator(),
                 _baseStats);
 
-            _healthController = new HealthController(Stats.GetStatByType(StatType.Health));
+            HealthController = new HealthController(StatsController.GetStatByType(StatType.Health));
 
-            _healthController.OnDeath += HandleDeath;
-            _healthController.OnMaxHealthChanged += HandleMaxHealthChanged;
+            
+            //TODO ADD THAT TO HEALH CONTROLLER AS STAT PROVIDER
+            HealthController.OnDeath += HandleDeath;
 
-            Stats.SubscribeToStatChange(StatType.Health, OnMaxHealthChanged);
-        }
-
-        private void HandleMaxHealthChanged(int newMaxHealth)
-        {
-            Logger.Log($"MaxHealth changed to {newMaxHealth}", Color.clear);
-        }
-
-        private void HandleDeath()
-        {
-            Logger.Log($"Entity {gameObject.name} died.", Color.red);
-            Destroy(gameObject);
+            StatsController.SubscribeToStatChange(StatType.Health, OnMaxHealthChanged);
         }
 
         private void Update()
         {
-            Stats.Mediator.Update(Time.deltaTime);
-            ExecuteCommand();
+            StatsController.Mediator.Update(Time.deltaTime);
+            ExecuteNextCommand();
         }
 
-        private void OnMaxHealthChanged(int newMaxHealth)
-        {
-            _healthController.AdjustMaxHealth(newMaxHealth);
-        }
-
-        private void ExecuteCommand()
+        private void ExecuteNextCommand()
         {
             if (_commands.Count > 0)
             {
@@ -66,19 +83,15 @@ namespace _Project.Scripts.Characters
             }
         }
 
-        public void EnqueueCommand(ICommand<IEntity> command)
+        private void HandleDeath()//TODO Probably temp
         {
-            _commands.Enqueue(command);
+            Logger.Log($"Entity {gameObject.name} died.", Color.red);
+            Destroy(gameObject);
         }
 
-        public void Accept(IVisitor visitor)
+        private void OnMaxHealthChanged(int newMaxHealth)//TODO Probably temp
         {
-            visitor.Visit(this);
-        }
-        
-        public void TakeDamage(int damage)//TODO TEMP
-        {
-            _healthController.TakeDamage(damage);
+            HealthController.AdjustMaxHealth(newMaxHealth);
         }
     }
 }

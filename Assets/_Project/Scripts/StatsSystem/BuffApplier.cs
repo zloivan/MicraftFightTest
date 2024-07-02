@@ -15,7 +15,7 @@ namespace _Project.Scripts.StatsSystem
 
         private static void ApplyBuff(Entity entity, StatBuff buffsToApply)
         {
-            entity.Stats.Mediator.AddBuff(buffsToApply);
+            entity.StatsController.Mediator.AddBuff(buffsToApply);
         }
     }
 }

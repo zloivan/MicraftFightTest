@@ -6,5 +6,7 @@ namespace _Project.Scripts.StatsSystem
         Defence = 1,
         Health = 2,
         Vampirism = 3,
+        CritChance = 4,
+        CritDamage = 5,
     }
 }

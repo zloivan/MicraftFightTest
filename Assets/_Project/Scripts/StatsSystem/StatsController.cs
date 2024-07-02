@@ -2,16 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using _Project.Scripts.Characters;
 
 namespace _Project.Scripts.StatsSystem
 {
-    public class Stats
+    public class StatsController : IStatController
     {
         public IStatsMediator Mediator { get; }
         private readonly Dictionary<StatType, int> _baseStats;
         private readonly Dictionary<StatType, List<Action<int>>> _callbacks = new();
 
-        public Stats(IStatsMediator mediator, BaseStats baseStats)
+        public StatsController(IStatsMediator mediator, BaseStats baseStats)
         {
             Mediator = mediator;
             _baseStats = Enum.GetValues(typeof(StatType))
@@ -57,6 +58,8 @@ namespace _Project.Scripts.StatsSystem
 
             return result.ToString();
         }
+
+        
 
 
         private int GetBaseValueStat(StatType statType, BaseStats baseStats) //TODO Move that to baseStat Class
