@@ -29,7 +29,6 @@ namespace _Project.Scripts.Characters.Test
         [SerializeField]
         private CameraController _cameraController;
 
-
         private IBuffProvider _buffProvider;
         private IAddressableService _addressableService;
         private IDataProvider _dataProvider;
@@ -95,7 +94,7 @@ namespace _Project.Scripts.Characters.Test
                 })
                 .Build();
 
-            _playerOne.EnqueueCammand(attackCommand);
+            _playerOne.EnqueueCommand(attackCommand);
         }
 
 
@@ -111,7 +110,7 @@ namespace _Project.Scripts.Characters.Test
                 })
                 .Build();
 
-            _playerOne.EnqueueCammand(attackCommand);
+            _playerOne.EnqueueCommand(attackCommand);
         }
     }
 }

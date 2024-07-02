@@ -13,12 +13,11 @@ namespace _Project.Scripts.Characters
         private BaseStats _baseStats;
 
         [SerializeField]
-        private bool LogMediator;
+        private bool _logMediator;
+
+        public Stats Stats { get; private set; }
 
         private readonly Queue<ICommand<IEntity>> _commands = new();
-
-        public Stats Stats { get; set; }
-
         private HealthController _healthController;
 
         public int CurrentHealth => _healthController.CurrentHealth;
@@ -26,7 +25,7 @@ namespace _Project.Scripts.Characters
         private void Awake()
         {
             Logger.Log($"Awake called for {name}, {gameObject.name}", Color.blue);
-            Stats = new Stats(LogMediator ? new StatsMediatorWithLogger(new StatsMediator()) : new StatsMediator(),
+            Stats = new Stats(_logMediator ? new StatsMediatorWithLogger(new StatsMediator()) : new StatsMediator(),
                 _baseStats);
 
             _healthController = new HealthController(Stats.GetStatByType(StatType.Health));
@@ -67,7 +66,7 @@ namespace _Project.Scripts.Characters
             }
         }
 
-        public void EnqueueCammand(ICommand<IEntity> command)
+        public void EnqueueCommand(ICommand<IEntity> command)
         {
             _commands.Enqueue(command);
         }
