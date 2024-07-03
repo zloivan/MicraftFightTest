@@ -1,7 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
+using _Project.Scripts.AbilitySystem;
+using _Project.Scripts.AbilitySystem.abstractions;
 using _Project.Scripts.AddressableSystem;
 using _Project.Scripts.CameraControllSystem;
+using _Project.Scripts.CombatSystem;
+using _Project.Scripts.CombatSystem.abstractions;
 using _Project.Scripts.Configs;
 using _Project.Scripts.ServiceLocatorSystem;
 using _Project.Scripts.StatsAndBuffsSystem;
@@ -21,41 +25,52 @@ namespace _Project.Scripts.Characters.Test
         private Entity _playerTwo;
 
         [SerializeField]
-        private Transform _buffIconParent;
-
-        [SerializeField]
-        private GameObject _buffIconPrefab;
+        private GameplayView _gameplayView;
 
         [SerializeField]
         private CameraController _cameraController;
 
         private IBuffProvider _buffProvider;
-        private IAddressableService _addressableService;
-        private IDataProvider _dataProvider;
-        private IAbilityController _abilityController;
+        private IConfigProvider _configProvider;
+        private IAbilityFactory _abilityFactory;
+        private List<StatBuff> availableBuffs;
 
         private void Start()
         {
             _buffProvider = ServiceLocator.For(this).Get<IBuffProvider>();
-            _addressableService = ServiceLocator.For(this).Get<IAddressableService>();
-            _dataProvider = ServiceLocator.For(this).Get<IDataProvider>();
+            _configProvider = ServiceLocator.For(this).Get<IConfigProvider>();
+            _abilityFactory = ServiceLocator.For(this).Get<IAbilityFactory>();
+
             
+            availableBuffs = _buffProvider.GetBuffs().ToList();
+            SetupAbilities();
+            SetupCamera();
+        }
+
+        private void SetupAbilities()
+        {
+            var firstPlayerAbilities = new List<Ability> { _abilityFactory.Create(_playerOne, AbilityType.BasicAttack) };
+            _playerOne.AbilityController.AddAbilities(firstPlayerAbilities);
+            
+            
+            _abilityFactory.Create(_playerTwo, AbilityType.BasicAttack);
+        }
+
+        private void SetupCamera()
+        {
             _cameraController.SetupLookAtPosition((_playerOne.transform.position + _playerTwo.transform.position) / 2);
-            
         }
 
         [ContextMenu("Apply Buffs")]
         public void ApplyBuffs()
         {
-            var buffsToApplie = _buffProvider.GetBuffs().ToList();
+            var minBuffCount = _configProvider.Data.settings.buffCountMin;
+            var maxBuffCount = _configProvider.Data.settings.buffCountMax;
 
-            var minBuffCount = _dataProvider.Data.settings.buffCountMin;
-            var maxBuffCount = _dataProvider.Data.settings.buffCountMax;
-            
-            var buffsForPlayerOne = buffsToApplie.TakeRandom(Random.Range(minBuffCount,
+            var buffsForPlayerOne = availableBuffs.TakeRandom(Random.Range(minBuffCount,
                 maxBuffCount));
 
-            var buffsForPlayerTwo = buffsToApplie.TakeRandom(Random.Range(minBuffCount,
+            var buffsForPlayerTwo = availableBuffs.TakeRandom(Random.Range(minBuffCount,
                 maxBuffCount));
 
             BuffApplier.ApplyBuffs(_playerOne, buffsForPlayerOne);
@@ -79,39 +94,26 @@ namespace _Project.Scripts.Characters.Test
         [ContextMenu("Output buffs")]
         public void Output()
         {
-            Logger.Log($"{string.Join('\n', _playerOne.StatsController.Mediator.ActiveBuffs.Select(e => e.Name))}", Color.green);
-            Logger.Log($"{string.Join('\n', _playerTwo.StatsController.Mediator.ActiveBuffs.Select(e => e.Name))}", Color.green);
+            Logger.Log($"{string.Join('\n', _playerOne.StatsController.Mediator.ActiveBuffs.Select(e => e.Name))}",
+                Color.green);
+            Logger.Log($"{string.Join('\n', _playerTwo.StatsController.Mediator.ActiveBuffs.Select(e => e.Name))}",
+                Color.green);
         }
 
         [ContextMenu("Player One Attack player Two")]
         public void PlayerOneAttack()
         {
-            var attackCommand = new AttackCommand.Builder(new List<IEntity> { _playerTwo })
-                .WithAction(playerTwo =>
-                {
-                    Logger.Log($"Player One attack player two", Color.red);
-                    //playerTwo.TakeDamage(_playerOne.StatsController.GetStatByType(StatType.Damage));
-                    //Logger.Log($"{playerTwo.CurrentHealth}", Color.green);
-                })
-                .Build();
-
-            _playerOne.EnqueueCommand(attackCommand);
+            AbilityApplier.Apply(_playerOne, new List<IEntity> { _playerTwo }, AbilityType.BasicAttack);
+            Logger.Log($"{_playerTwo.StatsController}", Color.magenta);
+            Logger.Log($"{_playerTwo.HealthController.CurrentHealth}", Color.magenta);
         }
-
 
         [ContextMenu("Player Two Attack player One")]
         public void PlayerTwoAttack()
         {
-            var attackCommand = new AttackCommand.Builder(new List<IEntity> { _playerOne })
-                .WithAction(playerOne =>
-                {
-                    Logger.Log($"Player Two attack player One", Color.red);
-                    //playerOne.TakeDamage(_playerTwo.StatsController.GetStatByType(StatType.Damage));
-                    //Logger.Log($"{playerOne.CurrentHealth}", Color.green);
-                })
-                .Build();
-
-            _playerOne.EnqueueCommand(attackCommand);
+            AbilityApplier.Apply(_playerTwo, new List<IEntity> { _playerOne }, AbilityType.BasicAttack);
+            Logger.Log($"{_playerOne.StatsController}", Color.magenta);
+            Logger.Log($"{_playerOne.HealthController.CurrentHealth}", Color.magenta);
         }
     }
 }

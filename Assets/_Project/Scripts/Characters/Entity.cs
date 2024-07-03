@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using _Project.Scripts.AbilitySystem;
+using _Project.Scripts.AbilitySystem.abstractions;
 using _Project.Scripts.PickupSystem;
 using _Project.Scripts.StatsSystem;
 using UnityEngine;
@@ -9,11 +11,13 @@ namespace _Project.Scripts.Characters
 {
     public class Entity : MonoBehaviour, IVisitable, IEntity
     {
-        [SerializeField] private BaseStats _baseStats;
-        [SerializeField] private bool _logMediator;
+        [SerializeField]
+        private BaseStats _baseStats;
 
+        [SerializeField]
+        private bool _logMediator;
 
-        public IAbilityController AbilityController { get; }
+        public IAbilityController AbilityController { get;private set;  }
         public IStatController StatsController { get; private set; }
         public IHealthController HealthController { get; private set; }
 
@@ -31,42 +35,18 @@ namespace _Project.Scripts.Characters
             visitor.Visit(this);
         }
 
-        // public void TakeDamage(int damage)//TODO TEMP
-
-
-        // {
-
-
-        //     HealthController.TakeDamage(damage);
-
-
-        // }
-
-
-        // public int GetStatValue(StatType statType)
-
-
-        // {
-
-
-        //     throw new NotImplementedException();
-
-
-        // }
-
-
         private void Awake()
         {
-            StatsController = new StatsController(_logMediator ? new StatsMediatorWithLogger(new StatsMediator()) : new StatsMediator(),
+            StatsController = new StatsController(
+                _logMediator ? new StatsMediatorWithLogger(new StatsMediator()) : new StatsMediator(),
                 _baseStats);
 
-            HealthController = new HealthController(StatsController.GetStatByType(StatType.Health));
+            HealthController = new HealthController(StatsController.MaxHealth);
 
-            
+            AbilityController = new AbilityController();
             //TODO ADD THAT TO HEALH CONTROLLER AS STAT PROVIDER
             HealthController.OnDeath += HandleDeath;
-
-            StatsController.SubscribeToStatChange(StatType.Health, OnMaxHealthChanged);
+            StatsController.SubscribeToStatChange(StatType.MaxHealth, OnMaxHealthChanged);
         }
 
         private void Update()
@@ -83,13 +63,13 @@ namespace _Project.Scripts.Characters
             }
         }
 
-        private void HandleDeath()//TODO Probably temp
+        private void HandleDeath() //TODO Probably temp
         {
             Logger.Log($"Entity {gameObject.name} died.", Color.red);
             Destroy(gameObject);
         }
 
-        private void OnMaxHealthChanged(int newMaxHealth)//TODO Probably temp
+        private void OnMaxHealthChanged(int newMaxHealth) //TODO Probably temp
         {
             HealthController.AdjustMaxHealth(newMaxHealth);
         }

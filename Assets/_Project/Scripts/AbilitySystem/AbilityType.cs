@@ -1,4 +1,4 @@
-namespace _Project.Scripts.CombatSystem.abstractions
+namespace _Project.Scripts.AbilitySystem
 {
     public enum AbilityType
     {

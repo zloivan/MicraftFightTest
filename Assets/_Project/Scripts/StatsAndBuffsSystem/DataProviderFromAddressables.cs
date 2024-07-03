@@ -8,17 +8,17 @@ using ServiceLocator = _Project.Scripts.ServiceLocatorSystem.ServiceLocator;
 
 namespace _Project.Scripts.StatsAndBuffsSystem
 {
-    public interface IDataProvider
+    public interface IConfigProvider
     {
         Data Data { get; }
     }
     
-    public class DataProviderFromAddressables : IDataProvider, IInitializeble
+    public class ConfigProviderFromAddressables : IConfigProvider, IInitializeble
     {
         private readonly string _address;
         public Data Data { get; private set; }
 
-        public DataProviderFromAddressables(string address)
+        public ConfigProviderFromAddressables(string address)
         {
             _address = address;
         }

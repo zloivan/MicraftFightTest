@@ -14,7 +14,6 @@ namespace _Project.Scripts.StatsSystem
         public float Duration;
         public AssetReferenceSprite IconAddress; //TODO use addressable address
 
-
         public StatBuff GetStatBuff()
         {
             Debug.Assert(!string.IsNullOrEmpty(IconAddress.AssetGUID), $"Address for {name} sprite must be defined",

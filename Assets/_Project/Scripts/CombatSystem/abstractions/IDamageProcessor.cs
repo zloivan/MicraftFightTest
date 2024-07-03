@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using _Project.Scripts.Characters;
-using _Project.Scripts.CombatSystem.abstractions;
 
-namespace _Project.Scripts.CombatSystem
+namespace _Project.Scripts.CombatSystem.abstractions
 {
-    public interface ICombatController
+    public interface IDamageProcessor
     {
         int CalculateDamage(IEntity user, IEntity target);
         void AddSupportedModifiers(IEnumerable<ICombatModifier> modifiers);

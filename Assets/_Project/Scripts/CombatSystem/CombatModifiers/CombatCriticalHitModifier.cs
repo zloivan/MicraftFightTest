@@ -1,5 +1,5 @@
 using _Project.Scripts.CombatSystem.abstractions;
-using _Project.Scripts.StatsSystem;
+using UnityEngine;
 
 namespace _Project.Scripts.CombatSystem.CombatModifiers
 {
@@ -7,12 +7,12 @@ namespace _Project.Scripts.CombatSystem.CombatModifiers
     {
         public void Modify(CombatContext context)
         {
-            var critChance = context.Attacker.StatsController.GetStatByType(StatType.CritChance);
-            
-            if (UnityEngine.Random.Range(1, 101) <= critChance)
+            var critChance = context.Attacker.StatsController.CritChance;
+
+            if (Random.Range(1, 101) <= critChance)
             {
                 context.IsCritical = true;
-                context.FinalDamage = context.BaseDamage * context.Attacker.StatsController.GetStatByType(StatType.CritDamage) / 100;
+                context.FinalDamage = context.BaseDamage * context.Attacker.StatsController.CritDamage / 100;
             }
             else
             {

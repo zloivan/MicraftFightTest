@@ -2,18 +2,21 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StatDisplayView : MonoBehaviour
+namespace _Project.Scripts.UI.Elements
 {
-    [SerializeField]
-    private Image _statIcon;
-
-    [SerializeField]
-    private TMP_Text _statName;
-
-
-    public void Setup(Sprite sprite, string statName)
+    public class StatDisplayView : MonoBehaviour
     {
-        _statIcon.sprite = sprite;
-        _statName.text = statName;
+        [SerializeField]
+        private Image _statIcon;
+
+        [SerializeField]
+        private TMP_Text _statName;
+
+
+        public void Setup(Sprite sprite, string statName)
+        {
+            _statIcon.sprite = sprite;
+            _statName.text = statName;
+        }
     }
 }

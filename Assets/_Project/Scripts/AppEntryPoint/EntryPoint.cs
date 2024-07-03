@@ -32,24 +32,47 @@ namespace _Project.Scripts.AppEntryPoint
         [SerializeField]
         private DirectFromSceneBuffProvider _directFromSceneBuffProvider;
 
-
-        //private DataProviderFromAddressables _dataProviderFromAddressables;
-        //private PlayerIconsProvider _playerStatPanelPlayerIconsProvider;
         private readonly List<IInitializeble> _initializbles = new();
+
 
         private void Awake()
         {
-            _addressablesService = new AddressablesService();
-            ServiceLocator.Global.Register<IAddressableService>(_addressablesService);
+            RegisterDataProviders();
 
-            var dataProviderFromAddressables = new DataProviderFromAddressables(_dataFileName);
-            ServiceLocator.Global.Register<IDataProvider>(dataProviderFromAddressables);
-            _initializbles.Add(dataProviderFromAddressables);
+            RegisterStatBuffsSystem();
 
-            var playerStatPanelPlayerIconsProvider = new PlayerIconsProvider(_iconsFolderPath);
-            ServiceLocator.Global.Register<IPlayerIconProvider>(playerStatPanelPlayerIconsProvider);
-            _initializbles.Add(playerStatPanelPlayerIconsProvider);
+            var combatController = RegisterCombatSystem();
 
+            RegisterAbilitySystem(combatController);
+        }
+
+        private static void RegisterAbilitySystem(DamageProcessor damageProcessor)
+        {
+            ServiceLocator.Global.Register<IAbilityFactory>(new AbilityFactory(damageProcessor));
+        }
+
+        private void RegisterDataProviders()
+        {
+            RegisterAddressablesSystem();
+            RegisterConfigProvider();
+            RegisterPlayerIconProvider();
+        }
+
+        private DamageProcessor RegisterCombatSystem()
+        {
+            var combatModifiers = new List<ICombatModifier>
+            {
+                new CombatCriticalHitModifier()
+            };
+            var damageProcessor = new DamageProcessor(combatModifiers);
+            
+            ServiceLocator.Global.Register<IDamageProcessor>(damageProcessor);
+
+            return damageProcessor;
+        }
+
+        private void RegisterStatBuffsSystem()
+        {
             ServiceLocator.Global.Register<IStatBuffFactory>(new StatBuffFactory());
 
             var addressableBuffProvider = new AddressableBuffProvider("baseBuff",
@@ -57,13 +80,26 @@ namespace _Project.Scripts.AppEntryPoint
 
             ServiceLocator.Global.Register<IBuffProvider>(addressableBuffProvider);
             _initializbles.Add(addressableBuffProvider);
+        }
 
+        private void RegisterPlayerIconProvider()
+        {
+            var playerStatPanelPlayerIconsProvider = new PlayerIconsProvider(_iconsFolderPath);
+            ServiceLocator.Global.Register<IPlayerIconProvider>(playerStatPanelPlayerIconsProvider);
+            _initializbles.Add(playerStatPanelPlayerIconsProvider);
+        }
 
-            var combatController = new CombatController(
-                new List<ICombatModifier> { new CombatCriticalHitModifier() });
-            
-            ServiceLocator.Global.Register<ICombatController>(combatController);
-            ServiceLocator.Global.Register<IAbilityFactory>(new AbilityFactory(combatController));
+        private void RegisterConfigProvider()
+        {
+            var dataProviderFromAddressables = new ConfigProviderFromAddressables(_dataFileName);
+            ServiceLocator.Global.Register<IConfigProvider>(dataProviderFromAddressables);
+            _initializbles.Add(dataProviderFromAddressables);
+        }
+
+        private void RegisterAddressablesSystem()
+        {
+            _addressablesService = new AddressablesService();
+            ServiceLocator.Global.Register<IAddressableService>(_addressablesService);
         }
 
         private async void Start()

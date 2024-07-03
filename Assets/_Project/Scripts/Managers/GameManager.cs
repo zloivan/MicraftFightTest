@@ -21,7 +21,7 @@ namespace _Project.Scripts.Managers
 
         public event Action<int, List<Stat>, List<Buff>> OnPlayerStatsChanged;
 
-        private IDataProvider _dataProvider;
+        private IConfigProvider _configProvider;
         private List<Buff> _allBuffs;
         private ICameraController _cameraController;
 
@@ -31,7 +31,7 @@ namespace _Project.Scripts.Managers
 
         private void Start()
         {
-            _dataProvider = ServiceLocator.For(this).Get<IDataProvider>();
+            _configProvider = ServiceLocator.For(this).Get<IConfigProvider>();
             _cameraController = ServiceLocator.For(this).Get<ICameraController>();
             
             _cameraController.SetupLookAtPosition((_player1.transform.position + _player2.transform.position) / 2);
@@ -51,7 +51,7 @@ namespace _Project.Scripts.Managers
 
         private void LoadBuffs()
         {
-            _allBuffs = new List<Buff>(_dataProvider.Data.buffs);
+            _allBuffs = new List<Buff>(_configProvider.Data.buffs);
         }
 
         public void StartGame(bool withBuffs)
@@ -63,7 +63,7 @@ namespace _Project.Scripts.Managers
 
         private void InitializePlayer(PlayerController player, bool withBuffs)
         {
-            player.Initialize(_dataProvider.Data.stats);
+            player.Initialize(_configProvider.Data.stats);
 
             if (withBuffs)
             {
@@ -77,8 +77,8 @@ namespace _Project.Scripts.Managers
 
         private void ApplyRandomBuffs(PlayerController player)
         {
-            var buffCount = Random.Range(_dataProvider.Data.settings.buffCountMin,
-                _dataProvider.Data.settings.buffCountMax + 1);
+            var buffCount = Random.Range(_configProvider.Data.settings.buffCountMin,
+                _configProvider.Data.settings.buffCountMax + 1);
 
             var selectedBuffs = new List<Buff>();
             var availableBuffs = new List<Buff>(_allBuffs);
@@ -91,7 +91,7 @@ namespace _Project.Scripts.Managers
                 var buff = availableBuffs[buffIndex];
                 selectedBuffs.Add(buff);
 
-                if (!_dataProvider.Data.settings.allowDuplicateBuffs)
+                if (!_configProvider.Data.settings.allowDuplicateBuffs)
                 {
                     availableBuffs.RemoveAt(buffIndex);
                 }

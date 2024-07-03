@@ -1,6 +1,4 @@
-using _Project.Scripts.Characters;
-
-namespace _Project.Scripts.CombatSystem.abstractions
+namespace _Project.Scripts.Characters.Commands
 {
     public class HealCommand : ICommand<IEntity>
     {

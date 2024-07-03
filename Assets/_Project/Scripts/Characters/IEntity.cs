@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using _Project.Scripts.AbilitySystem.abstractions;
 using _Project.Scripts.CombatSystem.abstractions;
 using _Project.Scripts.StatsSystem;
 
@@ -26,13 +27,6 @@ namespace _Project.Scripts.Characters
         IHealthController HealthController { get; }
     }
 
-    public interface IStatController
-    {
-        void SubscribeToStatChange(StatType health, Action<int> onMaxHealthChanged);
-        int GetStatByType(StatType health);
-        IStatsMediator Mediator { get; }
-    }
-    
     public interface IHealthController
     {
         void TakeDamage(int damage);

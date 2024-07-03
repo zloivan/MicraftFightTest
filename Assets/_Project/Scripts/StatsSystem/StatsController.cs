@@ -6,11 +6,41 @@ using _Project.Scripts.Characters;
 
 namespace _Project.Scripts.StatsSystem
 {
+    public enum StatType
+    {
+        Damage = 0,
+        Defence = 1,
+        MaxHealth = 2,
+        Vampirism = 3,
+        CritChance = 4,
+        CritDamage = 5,
+    }
+    
+    public interface IStatController
+    {
+        int MaxHealth { get; }
+        void SubscribeToStatChange(StatType statType, Action<int> callback);
+        IStatsMediator Mediator { get; }
+        int Damage { get; }
+        int Defense { get; }
+        int Vampirism { get; }
+        int CritChance { get; }
+        int CritDamage { get; }
+    }
+    
     public class StatsController : IStatController
     {
         public IStatsMediator Mediator { get; }
         private readonly Dictionary<StatType, int> _baseStats;
         private readonly Dictionary<StatType, List<Action<int>>> _callbacks = new();
+
+        public int Damage => GetStatByType(StatType.Damage);
+        public int MaxHealth => GetStatByType(StatType.MaxHealth);
+        public int Defense => GetStatByType(StatType.Defence);
+        public int Vampirism => GetStatByType(StatType.Vampirism);
+        public int CritChance => GetStatByType(StatType.CritChance);
+        public int CritDamage => GetStatByType(StatType.CritDamage);
+        
 
         public StatsController(IStatsMediator mediator, BaseStats baseStats)
         {
@@ -58,9 +88,6 @@ namespace _Project.Scripts.StatsSystem
 
             return result.ToString();
         }
-
-        
-
 
         private int GetBaseValueStat(StatType statType, BaseStats baseStats) //TODO Move that to baseStat Class
         {

@@ -1,71 +1,73 @@
 using System;
-using _Project.Scripts.Characters;
 
-public class HealthController : IHealthController
+namespace _Project.Scripts.Characters
 {
-    public event Action OnDeath;
-    public event Action<int> OnMaxHealthChanged;
-    private int _currentHealth;
-    private int _maxHealth;
-
-    public int CurrentHealth
+    public class HealthController : IHealthController
     {
-        get => _currentHealth;
-        private set
-        {
-            _currentHealth = value;
+        public event Action OnDeath;
+        public event Action<int> OnMaxHealthChanged;
+        private int _currentHealth;
+        private int _maxHealth;
 
-            if (_currentHealth <= 0)
+        public int CurrentHealth
+        {
+            get => _currentHealth;
+            private set
             {
-                OnDeath?.Invoke();
-            }
-        }
-    }
+                _currentHealth = value;
 
-    public int MaxHealth
-    {
-        get => _maxHealth;
-        private set
-        {
-            _maxHealth = value;
-            OnMaxHealthChanged?.Invoke(_maxHealth);
-        }
-    }
-
-    public HealthController(int initialHealth)
-    {
-        _maxHealth = initialHealth;
-        _currentHealth = initialHealth;
-    }
-
-    public void AdjustMaxHealth(int newMaxHealth)
-    {
-        var healthDifference = newMaxHealth - _maxHealth;
-
-        if (healthDifference > 0)
-        {
-            // Increase current health if max health increased
-            CurrentHealth += healthDifference;
-        }
-        else
-        {
-            // Adjust current health if it exceeds the new max health
-            if (CurrentHealth > newMaxHealth)
-            {
-                CurrentHealth = newMaxHealth;
+                if (_currentHealth <= 0)
+                {
+                    OnDeath?.Invoke();
+                }
             }
         }
 
-        MaxHealth = newMaxHealth;
-    }
+        public int MaxHealth
+        {
+            get => _maxHealth;
+            private set
+            {
+                _maxHealth = value;
+                OnMaxHealthChanged?.Invoke(_maxHealth);
+            }
+        }
 
-    public void TakeDamage(int damage)
-    {
-        CurrentHealth -= damage;
-    }
+        public HealthController(int initialHealth)
+        {
+            _maxHealth = initialHealth;
+            _currentHealth = initialHealth;
+        }
 
-    public void Heal(int amount)
-    {
-        CurrentHealth = Math.Min(CurrentHealth + amount, MaxHealth);
+        public void AdjustMaxHealth(int newMaxHealth)
+        {
+            var healthDifference = newMaxHealth - _maxHealth;
+
+            if (healthDifference > 0)
+            {
+                // Increase current health if max health increased
+                CurrentHealth += healthDifference;
+            }
+            else
+            {
+                // Adjust current health if it exceeds the new max health
+                if (CurrentHealth > newMaxHealth)
+                {
+                    CurrentHealth = newMaxHealth;
+                }
+            }
+
+            MaxHealth = newMaxHealth;
+        }
+
+        public void TakeDamage(int damage)
+        {
+            CurrentHealth -= damage;
+        }
+
+        public void Heal(int amount)
+        {
+            CurrentHealth = Math.Min(CurrentHealth + amount, MaxHealth);
+        }
     }
 }

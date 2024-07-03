@@ -1,35 +1,32 @@
-using System.Collections.Generic;
+using _Project.Scripts.AbilitySystem.abstractions;
 using _Project.Scripts.Characters;
-using _Project.Scripts.StatsSystem;
+using _Project.Scripts.Characters.Commands;
+using _Project.Scripts.CombatSystem.abstractions;
 using UnityEngine;
 
-namespace _Project.Scripts.CombatSystem.abstractions
+namespace _Project.Scripts.AbilitySystem.Abilities
 {
     public class AttackAbility : TargetableAbility
     {
-        private readonly ICombatController _combatController;
+        private readonly IDamageProcessor _damageProcessor;
 
-        public AttackAbility(IEntity user, IEnumerable<IEntity> targets, ICombatController combatController)
-            : base(user, targets)
+        public AttackAbility(IEntity user, IDamageProcessor damageProcessor, AbilityType abilityType) : base(
+            user,
+            abilityType)
         {
-            _combatController = combatController;
-        }
-
-        public AttackAbility(IEntity user, ICombatController combatController) : base(user)
-        {
-            _combatController = combatController;
+            _damageProcessor = damageProcessor;
         }
 
         public override void Execute()
         {
-            var vamp = _user.StatsController.GetStatByType(StatType.Vampirism);
+            var vamp = User.StatsController.Vampirism;
             foreach (var target in Targets)
             {
-                var damage = _combatController.CalculateDamage(_user, target);
+                var damage = _damageProcessor.CalculateDamage(User, target);
 
                 target.EnqueueCommand(new ApplyDamageCommand(target, damage));
                 var healAmount = Mathf.FloorToInt(damage * ((float)vamp / 100));
-                _user.EnqueueCommand(new HealCommand(_user, healAmount));
+                User.EnqueueCommand(new HealCommand(User, healAmount));
             }
         }
     }

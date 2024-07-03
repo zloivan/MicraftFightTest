@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace _Project.Scripts.Characters
 {
-    public class AttackCommand : ICommand<IEntity>
+    [Obsolete("Use Attack Ability")]
+    public class AttackCommand : ICommand<IEntity> 
     {
         private List<IEntity> _targets;
         private Action<IEntity> _action;
