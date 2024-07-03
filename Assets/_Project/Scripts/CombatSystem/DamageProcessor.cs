@@ -41,9 +41,11 @@ namespace _Project.Scripts.CombatSystem
         private int CalculateBase(IEntity attacker, IEntity defender)
         {
             //100 AD vs 25 DEF = 75 DAMAGE (25% from 100 AD)
+            var multiplier = 1 - (float)Mathf.Clamp(defender.StatsController.Defense, 0, 100) /
+                        100;
+            
             var damageReduction = Mathf.FloorToInt(attacker.StatsController.Damage *
-                                                   ((float)Mathf.Clamp(defender.StatsController.Defense, 0, 100) /
-                                                    100));
+                                                   multiplier);
 
             return damageReduction;
         }

@@ -14,7 +14,7 @@ namespace _Project.Scripts.Characters
 
     public interface IAbilityControllerProvider
     {
-        IAbilityController AbilityController { get; }
+        IAbilityModel AbilityModel { get; }
     }
 
     public interface IStatProvider

@@ -17,7 +17,7 @@ namespace _Project.Scripts.Characters
         [SerializeField]
         private bool _logMediator;
 
-        public IAbilityController AbilityController { get;private set;  }
+        public IAbilityModel AbilityModel { get;private set;  }
         public IStatController StatsController { get; private set; }
         public IHealthController HealthController { get; private set; }
 
@@ -43,7 +43,7 @@ namespace _Project.Scripts.Characters
 
             HealthController = new HealthController(StatsController.MaxHealth);
 
-            AbilityController = new AbilityController();
+            AbilityModel = new AbilityModel();
             //TODO ADD THAT TO HEALH CONTROLLER AS STAT PROVIDER
             HealthController.OnDeath += HandleDeath;
             StatsController.SubscribeToStatChange(StatType.MaxHealth, OnMaxHealthChanged);

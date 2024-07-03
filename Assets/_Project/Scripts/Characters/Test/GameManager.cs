@@ -41,7 +41,7 @@ namespace _Project.Scripts.Characters.Test
             _configProvider = ServiceLocator.For(this).Get<IConfigProvider>();
             _abilityFactory = ServiceLocator.For(this).Get<IAbilityFactory>();
 
-            
+
             availableBuffs = _buffProvider.GetBuffs().ToList();
             SetupAbilities();
             SetupCamera();
@@ -49,11 +49,13 @@ namespace _Project.Scripts.Characters.Test
 
         private void SetupAbilities()
         {
-            var firstPlayerAbilities = new List<Ability> { _abilityFactory.Create(_playerOne, AbilityType.BasicAttack) };
-            _playerOne.AbilityController.AddAbilities(firstPlayerAbilities);
-            
-            
-            _abilityFactory.Create(_playerTwo, AbilityType.BasicAttack);
+            var firstPlayerAbilities = new List<Ability>
+                { _abilityFactory.Create(_playerOne, AbilityType.BasicAttack) };
+            var secondPlayerAbilities = new List<Ability>
+                { _abilityFactory.Create(_playerTwo, AbilityType.BasicAttack) };
+
+            _playerOne.AbilityModel.AddAbilities(firstPlayerAbilities);
+            _playerTwo.AbilityModel.AddAbilities(secondPlayerAbilities);
         }
 
         private void SetupCamera()
@@ -94,10 +96,23 @@ namespace _Project.Scripts.Characters.Test
         [ContextMenu("Output buffs")]
         public void Output()
         {
-            Logger.Log($"{string.Join('\n', _playerOne.StatsController.Mediator.ActiveBuffs.Select(e => e.Name))}",
+            Logger.Log(
+                $"Player One Buffs:\n{string.Join('\n', _playerOne.StatsController.Mediator.ActiveBuffs.Select(e => e.Name))}",
                 Color.green);
-            Logger.Log($"{string.Join('\n', _playerTwo.StatsController.Mediator.ActiveBuffs.Select(e => e.Name))}",
+            Logger.Log(
+                $"Player Two Buffs:\n{string.Join('\n', _playerTwo.StatsController.Mediator.ActiveBuffs.Select(e => e.Name))}",
                 Color.green);
+
+            Logger.Log($"Player One Abilities:\n{string.Join('\n', _playerOne.AbilityModel.AvailableAbilities)}",
+                Color.yellow);
+            Logger.Log($"Player Two Abilities:\n{string.Join('\n', _playerTwo.AbilityModel.AvailableAbilities)}",
+                Color.yellow);
+
+            Logger.Log($"Player One Stats:\n{_playerOne.StatsController}", Color.blue);
+            Logger.Log($"Player Two Stats:\n{_playerTwo.StatsController}", Color.blue);
+
+            Logger.Log($"Player One Health:\n{_playerOne.HealthController.CurrentHealth}", Color.red);
+            Logger.Log($"Player Two Health:\n{_playerTwo.HealthController.CurrentHealth}", Color.red);
         }
 
         [ContextMenu("Player One Attack player Two")]
