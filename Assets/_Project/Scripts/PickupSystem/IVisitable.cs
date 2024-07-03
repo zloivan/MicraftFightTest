@@ -1,5 +1,3 @@
-using System;
-
 namespace _Project.Scripts.PickupSystem
 {
     public interface IVisitable

@@ -1,4 +1,3 @@
-using System;
 using _Project.Scripts.StatsSystem.OperationStrategies.abstractions;
 
 namespace _Project.Scripts.StatsSystem

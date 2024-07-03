@@ -1,4 +1,3 @@
-using _Project.Scripts.Controllers;
 using _Project.Scripts.ServiceLocatorSystem;
 using UnityEngine;
 using UnityEngine.UI;
