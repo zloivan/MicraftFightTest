@@ -7,9 +7,9 @@ using _Project.Scripts.CombatSystem.abstractions;
 using _Project.Scripts.CombatSystem.CombatModifiers;
 using _Project.Scripts.Configs;
 using _Project.Scripts.PickupSystem;
-using _Project.Scripts.ServiceLocatorSystem;
 using _Project.Scripts.StatsAndBuffsSystem;
 using UnityEngine;
+using Utilities.ServiceLocator;
 
 namespace _Project.Scripts.AppEntryPoint
 {

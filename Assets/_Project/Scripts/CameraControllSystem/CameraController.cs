@@ -1,6 +1,6 @@
-using _Project.Scripts.ServiceLocatorSystem;
 using _Project.Scripts.StatsAndBuffsSystem;
 using UnityEngine;
+using Utilities.ServiceLocator;
 using Random = UnityEngine.Random;
 
 namespace _Project.Scripts.CameraControllSystem

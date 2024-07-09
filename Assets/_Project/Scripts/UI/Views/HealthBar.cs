@@ -1,6 +1,6 @@
-using _Project.Scripts.ServiceLocatorSystem;
 using UnityEngine;
 using UnityEngine.UI;
+using Utilities.ServiceLocator;
 
 namespace _Project.Scripts.UI.Views
 {

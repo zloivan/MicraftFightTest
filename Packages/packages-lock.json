@@ -163,12 +163,33 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.zloivan.unity-event-bus": {
+      "version": "https://github.com/zloivan/EventBus.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "4e4673d66afc0a3ea5337d89ef69e1a7a6cbb00d"
+    },
+    "com.zloivan.unity-service-locator": {
+      "version": "https://github.com/zloivan/ServiceLocator.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "f910a965fcdda52ae0d704098bb531756c5c214b"
+    },
+    "com.zloivan.unity-state-machine": {
+      "version": "git@github.com:zloivan/StateMashine.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "338a925860c4c77e0332c0a7465b614fbb72fa8a"
+    },
     "com.zloivan.unityextensions": {
       "version": "https://github.com/zloivan/Extensions.git",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "66c490042c2bb08db916ed725b0d65b1432784bc"
+      "hash": "aa17837d65d0b0750302985b5f0117bb7f807f4d"
     },
     "com.zloivan.unityutilities": {
       "version": "git@github.com:zloivan/UnityUtilities.git",
@@ -177,7 +198,7 @@
       "dependencies": {
         "com.zloivan.unityextensions": "git@github.com:zloivan/Extensions.git"
       },
-      "hash": "4aeedf89275f8f07e61ded3002a4fd207212af8c"
+      "hash": "891b27c0e35e61eb791e8e75a61452638d128bb7"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",

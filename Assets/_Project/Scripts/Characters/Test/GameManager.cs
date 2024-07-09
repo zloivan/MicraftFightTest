@@ -4,11 +4,12 @@ using _Project.Scripts.AbilitySystem;
 using _Project.Scripts.AbilitySystem.abstractions;
 using _Project.Scripts.CameraControllSystem;
 using _Project.Scripts.Configs;
-using _Project.Scripts.ServiceLocatorSystem;
+
 using _Project.Scripts.StatsAndBuffsSystem;
 using _Project.Scripts.StatsSystem;
 using _Project.Scripts.Utilities.Extensions;
 using UnityEngine;
+using Utilities.ServiceLocator;
 using Logger = Utilities.Logger;
 
 namespace _Project.Scripts.Characters.Test

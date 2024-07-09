@@ -4,7 +4,7 @@ using _Project.Scripts.AddressableSystem;
 using _Project.Scripts.AppEntryPoint;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using ServiceLocator = _Project.Scripts.ServiceLocatorSystem.ServiceLocator;
+
 
 namespace _Project.Scripts.StatsAndBuffsSystem
 {
@@ -25,7 +25,7 @@ namespace _Project.Scripts.StatsAndBuffsSystem
 
         public async UniTask Initialize(CancellationToken cancellationToken)
         {
-            var addressablesService = ServiceLocator.Global.Get<IAddressableService>();
+            var addressablesService = global::Utilities.ServiceLocator.ServiceLocator.Global.Get<IAddressableService>();
             var text = await addressablesService.LoadAssetAsync<TextAsset>(_address, cancellationToken);
             Debug.Assert(text != null, "Couldn't load Config");
 

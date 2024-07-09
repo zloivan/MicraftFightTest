@@ -4,7 +4,8 @@ using _Project.Scripts.AddressableSystem;
 using _Project.Scripts.AppEntryPoint;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using ServiceLocator = _Project.Scripts.ServiceLocatorSystem.ServiceLocator;
+using Utilities.ServiceLocator;
+
 
 namespace _Project.Scripts.StatsAndBuffsSystem
 {

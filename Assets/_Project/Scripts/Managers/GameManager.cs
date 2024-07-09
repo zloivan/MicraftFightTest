@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using _Project.Scripts.CameraControllSystem;
 using _Project.Scripts.Controllers;
-using _Project.Scripts.ServiceLocatorSystem;
+
 using _Project.Scripts.StatsAndBuffsSystem;
 using _Project.Scripts.UI.Presenters;
 using _Project.Scripts.UI.Views;
 using UnityEngine;
+using Utilities.ServiceLocator;
 using Random = UnityEngine.Random;
 
 namespace _Project.Scripts.Managers

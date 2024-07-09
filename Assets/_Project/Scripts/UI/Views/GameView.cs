@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using _Project.Scripts.ServiceLocatorSystem;
 using _Project.Scripts.StatsAndBuffsSystem;
 using _Project.Scripts.UI.Elements;
 using _Project.Scripts.UI.Presenters;
 using UnityEngine;
 using UnityEngine.UI;
+using Utilities.ServiceLocator;
 
 namespace _Project.Scripts.UI.Views
 {
